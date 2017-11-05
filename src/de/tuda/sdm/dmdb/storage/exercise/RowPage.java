@@ -92,18 +92,24 @@ public class RowPage extends AbstractPage {
 
 		int baseOffset = slotNumber*this.slotSize;
 
+
 		// check if insert
-		if(slotNumber <= ){
-			throw new IllegalArgumentException();
+		if(slotNumber > ((this.offset)/this.slotSize) ){
+			throw new IllegalArgumentException("Slotnumber is invalid: new slots must be created leaving no gap to the highest numbered slot");
 		}
+		if(slotNumber < 0){
+			throw new IllegalArgumentException("Slot numbers may not be negative");
+		}
+		// checks whether record fixed and variable size fit into page
+		if(!recordFitsIntoPage(record)){
+			throw new IllegalArgumentException("Not enough space to insert record");
+		}
+
 
 		// we need to shift slots
 		if(doInsert){
 			// check if slot is occupied
 			if(baseOffset <= this.offset){
-				if(getFreeSpace() < slotSize){
-					throw new OutOfMemoryError("Page has no memory left to shift slots");
-				}
 				int bytesToMove = this.offset - baseOffset;
 				System.arraycopy(
 						this.data, baseOffset,
@@ -115,7 +121,6 @@ public class RowPage extends AbstractPage {
 
 
 		ByteBuffer bb = ByteBuffer.allocate(record.getFixedLength());
-		System.out.println("slotlen: "+Integer.valueOf(record.getFixedLength()).toString());
 		if(record.getFixedLength() != this.slotSize){
 			throw new IllegalArgumentException("The record to store does not match the slot width");
 		}
@@ -123,8 +128,6 @@ public class RowPage extends AbstractPage {
 		for (AbstractSQLValue value:record.getValues()) {
 			if(value.isFixedLength()) {
 				bb.put(value.serialize()); // write int INCLUDING data type indicator
-
-				System.out.println("wroteint : "+Integer.valueOf(value.serialize().length).toString());
 
 			} else {
 				// store variable data
@@ -140,8 +143,6 @@ public class RowPage extends AbstractPage {
 				bb.put(genAttributeMetaBytes(DATATYPE_VARCHAR, (short)value.getMaxLength())); // data type indicator for varchar
 				bb.putInt(varDataStart); // pointer to variable data
 
-				System.out.println("wrote 8b varch ");
-
 			}
 		}
 		// write fixed part
@@ -155,10 +156,6 @@ public class RowPage extends AbstractPage {
 
 	@Override
 	public int insert(AbstractRecord record){
-		if(!recordFitsIntoPage(record)){
-			throw new IllegalArgumentException("Not enough space to append record at end of page");
-		}
-
 		int newSlotNo = ((this.offset)/this.slotSize);
 		this.insert(newSlotNo, record, true);
 		System.out.println("Inserted at slotno "+Integer.valueOf(newSlotNo).toString());
