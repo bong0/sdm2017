@@ -92,6 +92,11 @@ public class RowPage extends AbstractPage {
 
 		int baseOffset = slotNumber*this.slotSize;
 
+		// check if insert
+		if(slotNumber <= ){
+			throw new IllegalArgumentException();
+		}
+
 		// we need to shift slots
 		if(doInsert){
 			// check if slot is occupied

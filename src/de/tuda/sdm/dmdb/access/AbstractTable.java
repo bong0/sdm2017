@@ -185,4 +185,9 @@ public abstract class AbstractTable implements Iterable{
 	 * @return
 	 */
 	public abstract AbstractRecord lookup(RowIdentifier rid);
+	
+	/**
+	 * Creates an iterator over the table
+	 */
+	public abstract java.util.Iterator<AbstractRecord> iterator();
 }

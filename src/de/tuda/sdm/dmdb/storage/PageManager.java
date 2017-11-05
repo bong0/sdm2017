@@ -1,5 +1,7 @@
 package de.tuda.sdm.dmdb.storage;
 
+import de.tuda.sdm.dmdb.storage.AbstractPage;
+import de.tuda.sdm.dmdb.storage.EnumPageType;
 import de.tuda.sdm.dmdb.storage.exercise.RowPage;
 
 /**
@@ -8,6 +10,8 @@ import de.tuda.sdm.dmdb.storage.exercise.RowPage;
  *
  */
 public class PageManager {
+	protected static int nextPageNumber = 0; //counter for unique page numbers in table
+	
 	/**
 	 * Creates a page for a given page type and slot size
 	 * @param type Enum PageType
@@ -15,11 +19,15 @@ public class PageManager {
 	 * @return
 	 */
 	public static AbstractPage createPage(EnumPageType type, int slotSize){
+		AbstractPage page = null;
+		
 		switch(type){
 		case RowPageType:
-			return new RowPage(slotSize);
+			page = new RowPage(slotSize);
+			break;
 		}
-		return new RowPage(slotSize);
+		page.setPageNumber(nextPageNumber++);
+		return page;
 	}
 	
 	/**
@@ -28,6 +36,6 @@ public class PageManager {
 	 * @return
 	 */
 	public static AbstractPage createDefaultPage(int slotSize){
-		return new RowPage(slotSize);
+		return createPage(EnumPageType.RowPageType, slotSize);
 	}
 }
