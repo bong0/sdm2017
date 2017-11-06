@@ -97,5 +97,3 @@ public class SQLVarchar extends SQLVarcharBase {
 	}
 
 }
-
-/* TODO: write test that checks whether serialized length is VARIABLE length */

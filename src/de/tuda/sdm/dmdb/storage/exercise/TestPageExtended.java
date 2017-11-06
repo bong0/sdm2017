@@ -27,7 +27,7 @@ public class TestPageExtended extends TestCase{
 		AbstractRecord r2 = new Record(2);
 		r2.setValue(0, new SQLInteger(987654321));
 		r2.setValue(1, new SQLVarchar("Updated", 10));
-		p.insert(0, r2, false); // insert slot at same slotno that already exists
+		p.insert(0, r2.clone(), false); // insert slot at same slotno that already exists
 		AbstractRecord readRec = new Record(2); // create record that is capable of storing 2 attrs
 		p.read(0, readRec); // read record
 		// verify if content is the same as we wrote
@@ -43,10 +43,9 @@ public class TestPageExtended extends TestCase{
 		boolean thrown=false;
 		try {
 			int numrecs_beforeshift = p.getNumRecords();
-			p.insert(0, r1, true); // insert slot at same slotno that already exists
+			p.insert(0, r1.clone(), true); // insert slot at same slotno that already exists
 			Assert.assertEquals(p.getNumRecords(),numrecs_beforeshift+1); // one record should have been created
 			slot++; // count new record
-			System.out.println(numrecs_beforeshift);
 			p.read(1, readRec);
 			Assert.assertEquals(readRec, r2); // the record which was written last before in the previous test should now be the last one after the shift
 		} catch (Exception e){
@@ -61,7 +60,7 @@ public class TestPageExtended extends TestCase{
 		 */
 		thrown=false;
 		try {
-			p.insert(slot + 30, r1, true);
+			p.insert(slot + 30, r1.clone(), true);
 		} catch (IllegalArgumentException e) {
 			thrown = true;
 		}
@@ -72,7 +71,18 @@ public class TestPageExtended extends TestCase{
 		 */
 		thrown=false;
 		try {
-			p.insert(slot + 30, r1, false);
+			p.insert(slot + 30, r1.clone(), false);
+		} catch (IllegalArgumentException e) {
+			thrown = true;
+		}
+		Assert.assertEquals(true, thrown);
+
+		/*
+		test wether reading a non-existent slot throws an exception
+		 */
+		thrown=false;
+		try {
+			p.read(slot + 40, readRec);
 		} catch (IllegalArgumentException e) {
 			thrown = true;
 		}
@@ -104,13 +114,13 @@ public class TestPageExtended extends TestCase{
 			while(true){
 				thrcount++;
 				int followslot = -1;
-				followslot = p.insert(r1);
+				followslot = p.insert(r1.clone());
 				Assert.assertEquals(followslot, ++slot); // calculated slotno should match returned one
 			}
 		} catch (IllegalArgumentException e) {
 			thrown = true;
 		}
-		Assert.assertEquals(true, thrown);
+		Assert.assertEquals(thrown, true);
 
 
 	}

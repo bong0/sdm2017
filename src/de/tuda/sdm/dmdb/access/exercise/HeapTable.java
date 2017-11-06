@@ -7,6 +7,8 @@ import de.tuda.sdm.dmdb.access.HeapTableBase;
 import de.tuda.sdm.dmdb.storage.PageManager;
 import de.tuda.sdm.dmdb.storage.Record;
 
+import java.rmi.UnexpectedException;
+
 public class HeapTable extends HeapTableBase {
 
 	/**
@@ -20,15 +22,24 @@ public class HeapTable extends HeapTableBase {
 
 	@Override
 	public RowIdentifier insert(AbstractRecord record) {
+
+		System.out.println(this.lastPage.getPageNumber());
+		int slot = -1;
 		try {
-			lastPage.insert(record);
+			slot = lastPage.insert(record);
 		} catch (Exception e) {
-			// page is full, create new one
+			e.printStackTrace();
+			// page is FULL, create new one
 			this.lastPage = PageManager.createDefaultPage(this.prototype.getFixedLength());
 			this.addPage(this.lastPage);
-			this.lastPage.insert(record);
+			try {
+				slot = this.lastPage.insert(record);
+			} catch (Exception e2){
+				throw new RuntimeException("Unexpected error: could not write record into newly created, blank, page");
+			}
 		}
-		return null;
+		this.recordCount++;
+		return new RowIdentifier(this.lastPage.getPageNumber(), slot);
 	}
 
 	@Override

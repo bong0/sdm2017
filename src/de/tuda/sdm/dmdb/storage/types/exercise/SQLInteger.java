@@ -45,19 +45,32 @@ public class SQLInteger extends SQLIntegerBase {
 		// concatenate the two arrays
 		byte[] out = new byte[attrMetaBytes.length+valueBytes.length];
 		System.arraycopy(attrMetaBytes, 0, out, 0, attrMetaBytes.length);
-		System.arraycopy(valueBytes, 0, out, attrMetaBytes.length, valueBytes.length);
+		System.arraycopy(valueBytes,0, out, attrMetaBytes.length, valueBytes.length);
 
 		return out;
 	}
 
 	@Override
 	public void deserialize(byte[] data) {
-		// TODO: implement check that indicator is correct
-		    // interpret bytes as unsigned through masking with AND 0xFF to get lower part
-			this.value =(data[meta_offset+0] & 0xFF) << 24 |
-				(data[meta_offset+1]& 0xFF) << 16 |
-				(data[meta_offset+2]& 0xFF) << 8 |
-				(data[meta_offset+3]& 0xFF);
+
+		byte[] metabytes = new byte[2*Short.BYTES];
+		System.arraycopy(
+				data, 0,
+				metabytes, 0,
+				2*Short.BYTES
+		);
+		RowPage.AttributeMetadata meta = RowPage.extractAttributeMetadata(metabytes);
+
+		if(meta.datatype != RowPage.DATATYPE_INT){
+			throw new RuntimeException("Expected datatype in attribute metadata to be INT");
+		} else if (meta.maxlen != 0){
+			throw new RuntimeException("Expected unused maxlen attribute in metadata to be 0");
+		}
+		// interpret bytes as unsigned through masking with AND 0xFF to get lower part
+		this.value =(data[meta_offset+0] & 0xFF) << 24 |
+			(data[meta_offset+1]& 0xFF) << 16 |
+			(data[meta_offset+2]& 0xFF) << 8 |
+			(data[meta_offset+3]& 0xFF);
 	}
 
 	@Override

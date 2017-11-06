@@ -20,69 +20,13 @@ public class RowPage extends AbstractPage {
 
 	private static int SCHEMA_BYTE_COUNT = 8;
 	/**
-	 * Constructir for a row page with a given (fixed) slot size
+	 * Constructor for a row page with a given (fixed) slot size
 	 * @param slotSize
 	 */
 	public RowPage(int slotSize) {
 		super(slotSize);
 	}
 
-	/*private class SlotMetadata {
-		public  int slotNo;
-		public  int fixedLengthBytes;
-		public  int varLengthBytes;
-		public  int varBeginOffset;
-		public SlotMetadata(int slotNo, int fixedLengthBytes, int varLengthBytes, int varBeginOffset){
-			this.slotNo=slotNo;
-			this.fixedLengthBytes=fixedLengthBytes;
-			this.varLengthBytes=varLengthBytes;
-			this.varBeginOffset=varBeginOffset;
-		}
-	}
-
-	final short metaDataSize = Short.BYTES * 3; // metadata per slot
-
-	private void setSlotMetadata(short slotNo, short fixedLengthBytes, short varLengthBytes, short varBeginOffset){
-		// don't store number of used slots in header
-
-
-		if(slotNo*(metaDataSize)+metaDataSize > this.PAGE_SIZE){
-			throw new IllegalArgumentException("Cannot store metadata for slot, exceeding Metadata allocation");
-		}
-
-		byte[] metaData = ByteBuffer.allocate(metaDataSize)
-				.putShort(fixedLengthBytes)
-				.putShort(varLengthBytes)
-				.putShort(varBeginOffset)
-				.array();
-
-		System.arraycopy(
-				metaData, 0,
-				this.data, SCHEMA_BYTE_COUNT+slotNo*(metaDataSize),
-				Short.BYTES
-		);
-	}
-
-	private SlotMetadata getSlotMetadata(int slotNo){
-		byte[] metaBytes = new byte[metaDataSize];
-		System.arraycopy(
-				this.data, slotNo*(metaDataSize),
-				metaBytes, 0,
-				Short.BYTES
-		);
-		ByteBuffer bb = ByteBuffer.allocate(metaDataSize).put(metaBytes);
-		short fixedLengthBytes = bb.getShort();
-		short varLengthBytes = bb.getShort();
-		short varBeginOffset = bb.getShort();
-
-
-		return new SlotMetadata(
-				slotNo,
-				fixedLengthBytes,
-				varLengthBytes,
-				varBeginOffset
-		);
-	}*/
 
 	public static short DATATYPE_VARCHAR = 0x00000044;
 	public static short DATATYPE_INT = 0x00000022;
@@ -113,7 +57,6 @@ public class RowPage extends AbstractPage {
 		if(doInsert){
 			// check if slot is occupied
 			if(baseOffset < this.offset){
-				System.out.println("moving");
 				int bytesToMove = this.offset - baseOffset;
 				System.arraycopy(
 						this.data, baseOffset,
@@ -162,7 +105,6 @@ public class RowPage extends AbstractPage {
 	public int insert(AbstractRecord record){
 		int newSlotNo = ((this.offset)/this.slotSize);
 		this.insert(newSlotNo, record, true);
-		System.out.println("Inserted at slotno "+Integer.valueOf(newSlotNo).toString());
 		return newSlotNo;
 	}
 	
@@ -236,7 +178,7 @@ public class RowPage extends AbstractPage {
 		return bb.array();
 	}
 
-	private class AttributeMetadata {
+	public static class AttributeMetadata {
 		public short datatype;
 		public short maxlen;
 		public AttributeMetadata(short datatype, short maxlen){
@@ -244,7 +186,7 @@ public class RowPage extends AbstractPage {
 			this.maxlen=maxlen;
 		}
 	}
-	private AttributeMetadata extractAttributeMetadata(byte[] metabytes){
+	public static AttributeMetadata extractAttributeMetadata(byte[] metabytes){
 		ByteBuffer bb = ByteBuffer.allocate(2*Short.BYTES);
 		bb.put(metabytes);
 		bb.rewind();
