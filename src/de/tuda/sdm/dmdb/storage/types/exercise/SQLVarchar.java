@@ -18,6 +18,7 @@ public class SQLVarchar extends SQLVarcharBase {
 	 * Constructor with default value and max. length 
 	 * @param maxLength
 	 */
+	public static int LENGTH = 8;  // 4B attr metadata, 4B address pointer
 	public SQLVarchar(int maxLength){
 		super(maxLength);
 	}
@@ -34,11 +35,6 @@ public class SQLVarchar extends SQLVarcharBase {
 	public static final int headerLength = Short.BYTES; // header carries string length
 
 	private static short meta_offset = 2*Short.BYTES;// bytes from attribute metadata
-	@Override
-	public int getFixedLength() {
-		return meta_offset+Integer.BYTES;
-	} // 4B attr metadata, 4B address pointer
-
 
 	@Override
 	public byte[] serialize() {

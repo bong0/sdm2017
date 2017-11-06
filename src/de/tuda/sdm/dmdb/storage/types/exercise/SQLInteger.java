@@ -16,24 +16,21 @@ public class SQLInteger extends SQLIntegerBase {
 	/**
 	 * Constructor with default value
 	 */
-	public SQLInteger(){
-		super();
+	public SQLInteger(){ super();
+		this.setMaxLength(8); // we need more space due to attribute metadata
 	}
-	
+
 	/**
 	 * Constructor with value
 	 * @param value Integer value
 	 */
 	public SQLInteger(int value){
 		super(value);
+		this.setMaxLength(8); // we need more space due to attribute metadata
 	}
 
 	private static short meta_offset = 2*Short.BYTES;// skip bytes from attribute metadata
 
-	@Override
-	public int getFixedLength() {
-		return LENGTH+meta_offset;
-	}
 
 	@Override
 	public byte[] serialize() {
@@ -66,6 +63,11 @@ public class SQLInteger extends SQLIntegerBase {
 	@Override
 	public SQLInteger clone(){
 		return new SQLInteger(this.value);
+	}
+
+	@Override
+	public int getFixedLength() {
+		return 8; //fixed length -- different from base class since we work with the attribute metadata
 	}
 
 }

@@ -104,12 +104,16 @@ public class RowPage extends AbstractPage {
 		if(!recordFitsIntoPage(record)){
 			throw new IllegalArgumentException("Not enough space to insert record");
 		}
+		if(record.getFixedLength() != this.slotSize){
+			throw new IllegalArgumentException("The record to store does not match the slot width");
+		}
 
 
 		// we need to shift slots
 		if(doInsert){
 			// check if slot is occupied
-			if(baseOffset <= this.offset){
+			if(baseOffset < this.offset){
+				System.out.println("moving");
 				int bytesToMove = this.offset - baseOffset;
 				System.arraycopy(
 						this.data, baseOffset,
@@ -117,18 +121,15 @@ public class RowPage extends AbstractPage {
 						bytesToMove
 				);
 			}
+			this.offset += slotSize; // advance offset since we needed to make space for slot on lower address
 		}
 
 
 		ByteBuffer bb = ByteBuffer.allocate(record.getFixedLength());
-		if(record.getFixedLength() != this.slotSize){
-			throw new IllegalArgumentException("The record to store does not match the slot width");
-		}
 
 		for (AbstractSQLValue value:record.getValues()) {
 			if(value.isFixedLength()) {
 				bb.put(value.serialize()); // write int INCLUDING data type indicator
-
 			} else {
 				// store variable data
 				int varDataStart = offsetEnd - value.getVariableLength();
@@ -145,13 +146,16 @@ public class RowPage extends AbstractPage {
 
 			}
 		}
+
 		// write fixed part
 		System.arraycopy(bb.array(), 0, this.data, baseOffset, bb.array().length);
 
 		// update offset
 		this.offset = max(this.offset, slotNumber*this.slotSize+slotSize);
 
-		this.numRecords++;
+		if(doInsert) {
+			this.numRecords++;
+		}
 	}
 
 	@Override
@@ -164,16 +168,23 @@ public class RowPage extends AbstractPage {
 	
 	@Override
 	public void read(int slotNumber, AbstractRecord record) {
-		// TODO catch out of bounds slot numbers
-		byte[] slotBytes = new byte[slotSize];
+		if(slotNumber < 0){
+			throw new IllegalArgumentException("Slotno is invalid, must be 0 or positive");
+		}
+		if(slotNumber > ((this.offset-this.slotSize)/this.slotSize)){
+			throw new IllegalArgumentException("Slotno is too large, not within the range of assigned slots");
+		}
+
+		byte[] slotBytes = new byte[this.slotSize];
 		System.arraycopy(
-				this.data, slotNumber*slotSize,
+				this.data, slotNumber*this.slotSize,
 				slotBytes, 0,
 				slotSize
 		);
-		ByteBuffer bb = ByteBuffer.allocate(slotSize);
+		ByteBuffer bb = ByteBuffer.allocate(this.slotSize);
 		bb.put(slotBytes);
 		bb.rewind();
+
 
 		ArrayList<AbstractSQLValue> extValues=new ArrayList<AbstractSQLValue>();
 		while(bb.hasRemaining()){
@@ -205,7 +216,7 @@ public class RowPage extends AbstractPage {
 				extValues.add(val);
 			} else {
 				// don't throw an exception here since the overridden method does not either (and we may not modify it)
-				throw new RuntimeException("Cannot identify datatype of attribute: "+Integer.toHexString(meta.datatype));
+				throw new RuntimeException("Cannot identify datatype of attribute. Type is 0x"+Integer.toHexString(meta.datatype));
 			}
 		}
 
