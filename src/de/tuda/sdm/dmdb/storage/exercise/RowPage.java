@@ -130,9 +130,12 @@ public class RowPage extends AbstractPage {
 		bb.rewind();
 
 
-		int currentRecord = 0;
+		int currentAttribute = 0;
 		for(AbstractSQLValue valPrototype : record.getValues()){
 
+			if(valPrototype == null){
+				throw new IllegalArgumentException("Attribute "+currentAttribute+" is not initialized!");
+			}
 			if(!bb.hasRemaining()){
 				throw new RuntimeException("No bytes left to parse but still expected attributes to be available");
 			}
@@ -144,23 +147,21 @@ public class RowPage extends AbstractPage {
 			if(valPrototype.isFixedLength()) {
 				bb.get(payload);
 				// decode fixed bytes and assign them to record to fill
-				record.getValue(currentRecord).deserialize(payload);
-				currentRecord++;
+				record.getValue(currentAttribute).deserialize(payload);
+				currentAttribute++;
 			} else {
 
 				int varPointer = bb.getInt(); // begin of variable data
 				int strLengthBytes = bb.getInt();
 
-				System.out.println(varPointer);
-				System.out.println(strLengthBytes);
 				byte[] stringbuf = new byte[strLengthBytes];
 				System.arraycopy(
 						this.data, varPointer,
 						stringbuf, 0,
 						strLengthBytes
 				); // read out max string length in bytes from data buffer
-				record.getValue(currentRecord).deserialize(stringbuf);
-				currentRecord++;
+				record.getValue(currentAttribute).deserialize(stringbuf);
+				currentAttribute++;
 			}
 
 		}
