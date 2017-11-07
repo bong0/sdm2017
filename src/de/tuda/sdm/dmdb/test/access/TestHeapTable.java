@@ -27,7 +27,7 @@ public class TestHeapTable extends TestCase{
 		AbstractTable table = new HeapTable(record1.clone());
 		RowIdentifier rid1 = table.insert(record1);
 		RowIdentifier rid2 = table.insert(record2);
-		
+
 		AbstractRecord record1Cmp = table.lookup(rid1.getPageNumber(), rid1.getSlotNumber());
 		AbstractRecord record2Cmp = table.lookup(rid2.getPageNumber(), rid2.getSlotNumber());
 		

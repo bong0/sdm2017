@@ -22,29 +22,8 @@ public class TestHeapTableExtended extends TestCase{
 		AbstractTable table = new HeapTable(record1.clone());
 		RowIdentifier rid1 = table.insert(record1);
 
-		// fill up page until full and check the switching of pagenumbering
-		int recsInserted = 0;
-		System.out.println("numrecsexp "+RowPage.estimateRecords(table.getPrototype()));
-		for(int i=0; i<RowPage.estimateRecords(table.getPrototype())-1; i++){
-			table.insert(record1);
-			recsInserted++;
-		}
-
-		// are all records saved?
-		Assert.assertEquals(table.getRecordCount(), recsInserted+1);
-
-		// Check if second page is still empty (it should be)
-		boolean thrown=false;
-		try {
-			table.lookup(1, 0);
-		} catch (Exception e) {
-			thrown = true;
-		}
-		Assert.assertEquals(true, thrown);
-
-
 		/* Lookup invalid pagenos */
-		thrown=false;
+		boolean thrown=false;
 		try {
 			table.lookup(-1, 0);
 		} catch (Exception e) {
@@ -69,5 +48,24 @@ public class TestHeapTableExtended extends TestCase{
 		Assert.assertEquals(true, thrown);
 
 
+		// fill up page until full and check the switching of pagenumbering
+		int recsInserted = 0;
+		System.out.println("numrecsexp "+RowPage.estimateRecords(table.getPrototype()));
+		for(int i=0; i<RowPage.estimateRecords(table.getPrototype())-1; i++){
+			table.insert(record1);
+			recsInserted++;
+		}
+
+		// are all records saved?
+		Assert.assertEquals(table.getRecordCount(), recsInserted+1);
+
+		// Check if second page is still empty (it should be)
+		thrown=false;
+		try {
+			table.lookup(1, 0);
+		} catch (Exception e) {
+			thrown = true;
+		}
+		Assert.assertEquals(true, thrown);
 	}
 }

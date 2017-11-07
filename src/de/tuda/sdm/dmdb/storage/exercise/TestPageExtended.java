@@ -29,6 +29,9 @@ public class TestPageExtended extends TestCase{
 		r2.setValue(1, new SQLVarchar("Updated", 10));
 		p.insert(0, r2.clone(), false); // insert slot at same slotno that already exists
 		AbstractRecord readRec = new Record(2); // create record that is capable of storing 2 attrs
+		readRec.setValue(0, new SQLInteger());
+		readRec.setValue(1, new SQLVarchar(10));
+
 		p.read(0, readRec); // read record
 		// verify if content is the same as we wrote
 		Assert.assertEquals(readRec, r2);

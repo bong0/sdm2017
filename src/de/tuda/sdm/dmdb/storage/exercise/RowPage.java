@@ -18,7 +18,8 @@ import static java.lang.Math.max;
 
 public class RowPage extends AbstractPage {
 
-	private static int SCHEMA_BYTE_COUNT = 8;
+	//private static int SCHEMA_BYTE_COUNT = 8;
+
 	/**
 	 * Constructor for a row page with a given (fixed) slot size
 	 * @param slotSize
@@ -68,6 +69,7 @@ public class RowPage extends AbstractPage {
 		}
 
 
+
 		ByteBuffer bb = ByteBuffer.allocate(record.getFixedLength());
 
 		for (AbstractSQLValue value:record.getValues()) {
@@ -84,9 +86,9 @@ public class RowPage extends AbstractPage {
 				this.offsetEnd = varDataStart; // update offsetEnd for variable data
 
 				// now write fixed data to attribute in slot
-				bb.put(genAttributeMetaBytes(DATATYPE_VARCHAR, (short)value.getMaxLength())); // data type indicator for varchar
+				//bb.put(genAttributeMetaBytes(DATATYPE_VARCHAR, (short)value.getMaxLength())); // data type indicator for varchar
 				bb.putInt(varDataStart); // pointer to variable data
-
+				bb.putInt(value.getVariableLength()); // set varlength in bytes
 			}
 		}
 
@@ -128,49 +130,47 @@ public class RowPage extends AbstractPage {
 		bb.rewind();
 
 
-		ArrayList<AbstractSQLValue> extValues=new ArrayList<AbstractSQLValue>();
-		while(bb.hasRemaining()){
-			byte[] metabytes = new byte[2*Short.BYTES];
-			bb.get(metabytes);
+		int currentAttribute = 0;
+		for(AbstractSQLValue valPrototype : record.getValues()){
 
-			AttributeMetadata meta = extractAttributeMetadata(metabytes);
-
-			if(meta.datatype == DATATYPE_INT){
-				SQLInteger val = new SQLInteger();
-				byte[] valuebytes = new byte[Integer.BYTES+metabytes.length];
-				bb.position(bb.position()-metabytes.length); // rewind buffer 4 bytes to we re-ingest the metadata so deserialize of sqlint is happy
-				bb.get(valuebytes);
-
-				val.deserialize(valuebytes);
-				extValues.add(val);
-
-			} else if(meta.datatype == DATATYPE_VARCHAR){
-				SQLVarchar val = new SQLVarchar(meta.maxlen);
-				int varDataOffset = bb.getInt();
-
-				byte[] stringbuf = new byte[meta.maxlen * 4]; // 4 bytes is the max len of bytes for one utf8 char
-				System.arraycopy(
-						this.data, varDataOffset,
-						stringbuf, 0,
-						stringbuf.length
-				); // read out max string length in bytes from data buffer
-				val.deserialize(stringbuf);
-				extValues.add(val);
-			} else {
-				// don't throw an exception here since the overridden method does not either (and we may not modify it)
-				throw new RuntimeException("Cannot identify datatype of attribute. Type is 0x"+Integer.toHexString(meta.datatype));
+			if(valPrototype == null){
+				throw new IllegalArgumentException("Attribute "+currentAttribute+" is not initialized!");
 			}
+			if(!bb.hasRemaining()){
+				throw new RuntimeException("No bytes left to parse but still expected attributes to be available");
+			}
+
+			// read fixed length bytes
+			byte[] payload = new byte[valPrototype.getFixedLength()];
+
+			// we need to dereference/fetch the variable data
+			if(valPrototype.isFixedLength()) {
+				bb.get(payload);
+				// decode fixed bytes and assign them to record to fill
+				record.getValue(currentAttribute).deserialize(payload);
+				currentAttribute++;
+			} else {
+
+				int varPointer = bb.getInt(); // begin of variable data
+				int strLengthBytes = bb.getInt();
+
+				byte[] stringbuf = new byte[strLengthBytes];
+				System.arraycopy(
+						this.data, varPointer,
+						stringbuf, 0,
+						strLengthBytes
+				); // read out max string length in bytes from data buffer
+				record.getValue(currentAttribute).deserialize(stringbuf);
+				currentAttribute++;
+			}
+
 		}
 
-		Iterator<AbstractSQLValue> li = extValues.listIterator();
-		for(int i=0; i<extValues.size(); i++){
-			record.setValue(i, li.next()); // add actual attribute value to record to generate
-		}
 	}
 
 
 
-	// maxlen is only used to store maximum length of string
+	/*// maxlen is only used to store maximum length of string
 	public static byte[] genAttributeMetaBytes(short datatype, short maxlen){
 		ByteBuffer bb = ByteBuffer.allocate(2*Short.BYTES);
 		bb.putShort(datatype);
@@ -193,6 +193,6 @@ public class RowPage extends AbstractPage {
 		short datatype = bb.getShort();
 		short maxlen = bb.getShort();
 		return new AttributeMetadata(datatype, maxlen);
-	}
+	}*/
 }
 
