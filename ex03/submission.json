@@ -1,0 +1,15 @@
+[
+  {
+    "name": "SDM_Exercise03",
+    "params": {
+      "source_files": ["src/de/tuda/sdm/dmdb/access/exercise/Leaf.java", "src/de/tuda/sdm/dmdb/access/exercise/Node.java", "src/de/tuda/sdm/dmdb/access/exercise/UniqueBPlusTree.java"],
+      "java_files": ["Leaf.java", "Node.java", "UniqueBPlusTree.java"],
+      "junit_test_fqns": ["de.tuda.sdm.dmdb.test.access.TestUniqueBPlusTree"],
+      "testing_jar": "SDM_Exercise_03.jar:SDM_Exercise_03_commonBase.jar",
+      "junit_jar_path": "$HOME/Downloads/junit-4.12.jar",
+      "hamcrest_jar_path": "$HOME/Downloads/hamcrest-core-1.3.jar",
+      "java_path": "/usr/bin/java",
+      "javac_path": "/usr/bin/javac"
+    }
+  }
+]
