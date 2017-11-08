@@ -70,7 +70,7 @@ public class TestUniqueBPlusTree extends TestCase{
 		index.insert(record1);
 		index.insert(record2);
 		index.insert(record3);
-		//index.print();
+		index.print();
 		
 		AbstractRecord record1Cmp = index.lookup((SQLVarchar) record1.getValue(1));
 		Assert.assertEquals(record1, record1Cmp);
