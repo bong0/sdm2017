@@ -5,6 +5,7 @@ import de.tuda.sdm.dmdb.access.LeafBase;
 import de.tuda.sdm.dmdb.access.RowIdentifier;
 import de.tuda.sdm.dmdb.access.UniqueBPlusTreeBase;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
+import de.tuda.sdm.dmdb.storage.Record;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
 import de.tuda.sdm.dmdb.storage.types.SQLInteger;
 
@@ -24,16 +25,31 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 
 	@Override
 	public AbstractRecord lookup(T key) {
-		//TODO: implement this method
-		
+
+		AbstractRecord leafRecord = this.uniqueBPlusTree.getLeafRecPrototype().clone();
+
+		for(int i=0; i<this.indexPage.getNumRecords();++i){
+			this.indexPage.read(i, leafRecord);
+
+			SQLInteger keyValue = (SQLInteger)leafRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
+
+			if(keyValue == key){
+				return leafRecord;
+			}
+		}
+
 		return null;
 	}
 	
 	@Override
 	public boolean insert(T key, AbstractRecord record){
-		//TODO: implement this method
-		//search for key and return false if existing
-		
+
+		if(lookup(key) != null){
+			return false; // record with that key exists
+		}
+
+		this.indexPage.insert(record);
+
 		return true;
 	}
 	

@@ -17,7 +17,7 @@ import de.tuda.sdm.dmdb.storage.types.SQLInteger;
 public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTreeBase<T> {
 	
 	/**
-	 * Constructor of B+-Tree with user-defined fil-grade
+	 * Constructor of B+-Tree with user-defined fill-grade
 	 * @param table Table to be indexed
 	 * @param keyColumnNumber Number of unique column which should be indexed
 	 * @param fillGrade fill grade of index
@@ -39,8 +39,10 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 	@Override
 	public boolean insert(AbstractRecord record) {
 		//insert record
-		//T key = (T) record.getValue(this.keyColumnNumber);
-		
+
+		T key = (T) record.getValue(this.keyColumnNumber);
+		System.out.println(root.binarySearch(key));
+
 		//TODO: implement this method
 		
 		return true;
@@ -48,8 +50,9 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 	
 	@Override
 	public AbstractRecord lookup(T key) {
-		//TODO: implement this method
-		
+
+		int posFound = root.binarySearch(key);
+
 		return null;
 	}
 

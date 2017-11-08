@@ -25,8 +25,19 @@ public class Node<T extends AbstractSQLValue> extends NodeBase<T>{
 	
 	@Override
 	public AbstractRecord lookup(T key) {
-		//TODO: implement this method
-		
+
+		AbstractRecord nodeRecord = this.uniqueBPlusTree.getNodeRecPrototype().clone();
+
+		for(int i=0; i<this.indexPage.getNumRecords();++i){
+			this.indexPage.read(i, nodeRecord);
+
+			SQLInteger keyValue = (SQLInteger)nodeRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
+
+			if(keyValue == key){
+				return nodeRecord;
+			}
+		}
+
 		return null;
 	}
 	
