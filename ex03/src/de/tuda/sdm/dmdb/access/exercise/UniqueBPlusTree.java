@@ -60,6 +60,8 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 			// insert new leaf into designated leaf page
 			destPage.insert(key, record);
 		} catch (Exception e){
+			System.out.println("Uncaught Exception, not implemented... ");
+			e.printStackTrace();
 			// case: we need to create a new page since it's full
 			// incorporate page into indexpage map and setup linking in tree
 		}
@@ -70,11 +72,19 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 	
 	@Override
 	public AbstractRecord lookup(T key) {
-		// FIXME => don't know what binarysearch returns if nothing found/something found
-		// change accordingly
-		int posFound = root.binarySearch(key);
-		System.out.println("searchres look for key "+key+":" +posFound);
-		return null;
+		AbstractRecord leafRecFound = root.lookup(key); // does internal recursive binsearch
+
+		// check also if record found matches length of a leaf record
+		if(leafRecFound == null || leafRecFound.getValues().length != 3){
+			return null;
+		}
+
+		SQLInteger pageno = (SQLInteger) leafRecFound.getValue(PAGE_POS);
+		SQLInteger slotno = (SQLInteger) leafRecFound.getValue(SLOT_POS);
+
+
+		// now that we have the rowid => look up actual data
+		return this.table.lookup(pageno.getValue(), slotno.getValue());
 	}
 
 }

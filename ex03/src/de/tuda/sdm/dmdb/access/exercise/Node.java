@@ -28,6 +28,9 @@ public class Node<T extends AbstractSQLValue> extends NodeBase<T>{
 
 		AbstractRecord nodeRecord = this.uniqueBPlusTree.getNodeRecPrototype().clone();
 
+		// FIXME use this.binarySearch(); instead
+
+
 		for(int i=0; i<this.indexPage.getNumRecords();++i){
 			this.indexPage.read(i, nodeRecord);
 

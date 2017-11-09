@@ -28,14 +28,19 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 
 		AbstractRecord leafRecord = this.uniqueBPlusTree.getLeafRecPrototype().clone();
 
-		for(int i=0; i<this.indexPage.getNumRecords();++i){
-			this.indexPage.read(i, leafRecord);
+		// if fillgrade of leaf is 0 there can't be content to return
+		if(this.indexPage.getNumRecords() == 0){
+			return null;
+		}
 
-			SQLInteger keyValue = (SQLInteger)leafRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
+		int foundPos = this.binarySearch(key);
+		this.indexPage.read(foundPos, leafRecord);
 
-			if(keyValue == key){
-				return leafRecord;
-			}
+		System.out.println("fillgrade of leaf "+this.indexPage.getNumRecords());
+		SQLInteger keyValue = (SQLInteger)leafRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
+
+		if(keyValue == key){
+			return leafRecord;
 		}
 
 		return null;
