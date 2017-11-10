@@ -37,14 +37,16 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 		if(this.indexPage.getNumRecords() == 0){
 			return null;
 		}
-
+		System.out.println("Key: " +key);
 		int foundPos = this.binarySearch(key);
+		System.out.println("Foundpos: " +foundPos);
 		this.indexPage.read(foundPos, leafRecord);
 
 		System.out.println("fillgrade of leaf "+this.indexPage.getNumRecords());
-		T keyValue = (T)leafRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
-
+		T keyValue = (T) leafRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
+		System.out.println("Keyvalue: " +keyValue);
 		if(keyValue == key){
+			System.out.println("Key: " +key+" Record: "+leafRecord);
 			return leafRecord;
 		}
 
@@ -69,9 +71,9 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 		leafRec.setValue(UniqueBPlusTreeBase.KEY_POS, key);
 		leafRec.setValue(UniqueBPlusTreeBase.PAGE_POS, new SQLInteger(newRid.getPageNumber()));
 		leafRec.setValue(UniqueBPlusTreeBase.SLOT_POS, new SQLInteger(newRid.getSlotNumber()));
-
+System.out.println("fillgrade BEFORE adding " +this.indexPage.getNumRecords());
 		this.indexPage.insert(leafRec); // add leaf Record to index
-
+		System.out.println("fillgrade AFTER adding " +this.indexPage.getNumRecords());
 		return true;
 	}
 	

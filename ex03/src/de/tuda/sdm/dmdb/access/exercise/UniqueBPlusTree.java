@@ -4,6 +4,7 @@ import de.tuda.sdm.dmdb.access.AbstractTable;
 import de.tuda.sdm.dmdb.access.UniqueBPlusTreeBase;
 import de.tuda.sdm.dmdb.access.AbstractIndexElement;
 import de.tuda.sdm.dmdb.access.exercise.Node;
+import de.tuda.sdm.dmdb.catalog.objects.Index;
 import de.tuda.sdm.dmdb.storage.AbstractPage;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
@@ -50,7 +51,10 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 		// case: root is not yet an inner node, all keys are on one leaf/level
 		if(this.getRoot() instanceof Leaf) {
 			destPage = this.getRoot();
+			destPage.insert(key, record);
+			System.out.println("After adding: "+key+"---"+record.toString());
 		} else {
+			
 			// Traverse tree recursively finding the last inner node ...
 			// that is responsible for the range the key lies in
 			// use helper method?
@@ -84,6 +88,7 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 
 
 		// now that we have the rowid => look up actual data
+		System.out.println("Page No."+pageno.getValue()+"SlotNo. "+slotno.getValue());
 		return this.table.lookup(pageno.getValue(), slotno.getValue());
 	}
 
