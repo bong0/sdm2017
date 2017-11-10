@@ -74,8 +74,10 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 	public AbstractRecord lookup(T key) {
 		AbstractRecord leafRecFound = root.lookup(key); // does internal recursive binsearch
 
+		root.print();
 		// check also if record found matches length of a leaf record
 		if(leafRecFound == null || leafRecFound.getValues().length != 3){
+			System.out.println("index lookup returned: "+leafRecFound);
 			return null;
 		}
 

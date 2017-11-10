@@ -37,7 +37,8 @@ public class TestUniqueBPlusTree extends TestCase{
 		index.insert(record2);
 		index.insert(record3);
 		//index.print();
-		
+
+		System.out.println("--------");
 		AbstractRecord record1Cmp = index.lookup((SQLInteger) record1.getValue(0));
 		Assert.assertEquals(record1, record1Cmp);
 		

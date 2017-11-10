@@ -35,16 +35,46 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 
 		// if fillgrade of leaf is 0 there can't be content to return
 		if(this.indexPage.getNumRecords() == 0){
+			System.out.println("leaf lookup ret null because of no records avail");
 			return null;
 		}
 
 		int foundPos = this.binarySearch(key);
 		this.indexPage.read(foundPos, leafRecord);
+		System.out.println("bs returned "+foundPos);
+
+		/*
+		public int compareTo(AbstractSQLValue o) {
+			SQLInteger cmp = (SQLInteger)o;
+			if (this.value < cmp.value) {
+				return 1;
+			} else {
+				return this.value > cmp.value ? -1 : 0;
+			}
+    	}
+    	*/
+		SQLInteger key1 = new SQLInteger(2);
+		SQLInteger keyValue1 = new SQLInteger(1);
+
+		if(key1.compareTo(keyValue1)==0){
+			System.out.println("equal");
+		}
+		else if(key1.compareTo(keyValue1)>0){
+			System.out.println("1<2");
+		}
+		else if(key1.compareTo(keyValue1)<0){
+			System.out.println("1>2");
+		}
+
+
 
 		System.out.println("fillgrade of leaf "+this.indexPage.getNumRecords());
 		T keyValue = (T)leafRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
 
-		if(keyValue == key){
+		System.out.println("wantedkey: "+key+" but got "+keyValue);
+		leafRecord.toString();
+		if(keyValue.equals(key)){
+			System.out.println("KEY matches");
 			return leafRecord;
 		}
 
