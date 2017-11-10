@@ -4,6 +4,7 @@ import de.tuda.sdm.dmdb.access.UniqueBPlusTreeBase;
 import de.tuda.sdm.dmdb.storage.AbstractPage;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
+import de.tuda.sdm.dmdb.storage.types.SQLInteger;
 
 /**
  * Abstract class for an index element (node or leaf)
@@ -117,13 +118,24 @@ public abstract class AbstractIndexElement<T extends AbstractSQLValue>{
 			AbstractSQLValue keyValue = indexRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
 			
 			if(key.compareTo(keyValue)==0){
+				System.out.println("ret cntr");
 				return center;
 			}
 			else if(key.compareTo(keyValue)<0){
-				end = center - 1;
+				System.out.println("ret left part start="+start+" end="+end);
+				if(key instanceof SQLInteger) {
+					start = center + 1;
+				} else {
+					end = center - 1;
+				}
 			}
 			else if(key.compareTo(keyValue)>0){
-				start = center + 1;
+				System.out.println("ret right part start="+start+" end="+end);
+				if(key instanceof SQLInteger) {
+					end = center - 1;
+				} else {
+					start = center + 1;
+				}
 			}
 		}
 		return start;

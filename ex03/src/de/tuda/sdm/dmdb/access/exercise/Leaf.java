@@ -38,37 +38,20 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 			System.out.println("leaf lookup ret null because of no records avail");
 			return null;
 		}
-
+		System.out.println("Key: " +key);
 		int foundPos = this.binarySearch(key);
-		this.indexPage.read(foundPos, leafRecord);
-		System.out.println("bs returned "+foundPos);
-
+		System.out.println("Foundpos: " +foundPos);
 		/*
-		public int compareTo(AbstractSQLValue o) {
-			SQLInteger cmp = (SQLInteger)o;
-			if (this.value < cmp.value) {
-				return 1;
-			} else {
-				return this.value > cmp.value ? -1 : 0;
-			}
-    	}
-    	*/
-		SQLInteger key1 = new SQLInteger(2);
-		SQLInteger keyValue1 = new SQLInteger(1);
+		if(foundPos <= -1){
+			foundPos = this.indexPage.getNumRecords();
+		}*/
 
-		if(key1.compareTo(keyValue1)==0){
-			System.out.println("equal");
-		}
-		else if(key1.compareTo(keyValue1)>0){
-			System.out.println("1<2");
-		}
-		else if(key1.compareTo(keyValue1)<0){
-			System.out.println("1>2");
-		}
+		System.out.println("nrec "+this.indexPage.getNumRecords());
+		leafRecord.toString();
 
+		System.out.println("bs returned "+foundPos);
+		this.indexPage.read(foundPos, leafRecord);
 
-
-		System.out.println("fillgrade of leaf "+this.indexPage.getNumRecords());
 		T keyValue = (T)leafRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
 
 		System.out.println("wantedkey: "+key+" but got "+keyValue);
@@ -94,12 +77,12 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 
 		AbstractRecord leafRec = this.uniqueBPlusTree.getLeafRecPrototype().clone();
 
+		System.out.println("size of data table "+this.uniqueBPlusTree.getTable().getRecordCount());
 		RowIdentifier newRid = this.uniqueBPlusTree.getTable().insert(record); // insert data record to HeapTable
 		// fill new leaf record with the given key and reference to the new slot just created
 		leafRec.setValue(UniqueBPlusTreeBase.KEY_POS, key);
 		leafRec.setValue(UniqueBPlusTreeBase.PAGE_POS, new SQLInteger(newRid.getPageNumber()));
 		leafRec.setValue(UniqueBPlusTreeBase.SLOT_POS, new SQLInteger(newRid.getSlotNumber()));
-
 		this.indexPage.insert(leafRec); // add leaf Record to index
 
 		return true;

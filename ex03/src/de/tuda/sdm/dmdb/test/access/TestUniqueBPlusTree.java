@@ -38,7 +38,7 @@ public class TestUniqueBPlusTree extends TestCase{
 		index.insert(record3);
 		//index.print();
 
-		System.out.println("--------");
+		System.out.println("--------THE FOLLOWING LOOKUPS SHOULD SUCCEED!!!-----------");
 		AbstractRecord record1Cmp = index.lookup((SQLInteger) record1.getValue(0));
 		Assert.assertEquals(record1, record1Cmp);
 		
@@ -53,6 +53,7 @@ public class TestUniqueBPlusTree extends TestCase{
 	 * Insert three records and reads them again using a SQLVarchar index
 	 */
 	public void testIndexSimple2(){
+
 		AbstractRecord record1 = new Record(2);
 		record1.setValue(0, new SQLInteger(1));
 		record1.setValue(1, new SQLVarchar("Hello111", 10));
@@ -81,6 +82,7 @@ public class TestUniqueBPlusTree extends TestCase{
 		
 		AbstractRecord record3Cmp = index.lookup((SQLVarchar) record3.getValue(1));
 		Assert.assertEquals(record3, record3Cmp);
+
 	}
-	
+
 }
