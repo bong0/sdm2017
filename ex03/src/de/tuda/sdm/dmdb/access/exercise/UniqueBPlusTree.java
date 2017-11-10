@@ -51,7 +51,6 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 		// case: root is not yet an inner node, all keys are on one leaf/level
 		if(this.getRoot() instanceof Leaf) {
 			destPage = this.getRoot();
-			System.out.println("After adding: "+key+"---"+record.toString());
 		} else {
 			
 			// Traverse tree recursively finding the last inner node ...
@@ -77,10 +76,8 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 	public AbstractRecord lookup(T key) {
 		AbstractRecord leafRecFound = root.lookup(key); // does internal recursive binsearch
 
-		root.print();
 		// check also if record found matches length of a leaf record
 		if(leafRecFound == null || leafRecFound.getValues().length != 3){
-			System.out.println("index lookup returned: "+leafRecFound);
 			return null;
 		}
 
@@ -89,7 +86,6 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 
 
 		// now that we have the rowid => look up actual data
-		System.out.println("Page No."+pageno.getValue()+"SlotNo. "+slotno.getValue());
 		return this.table.lookup(pageno.getValue(), slotno.getValue());
 	}
 

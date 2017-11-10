@@ -118,11 +118,9 @@ public abstract class AbstractIndexElement<T extends AbstractSQLValue>{
 			AbstractSQLValue keyValue = indexRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
 			
 			if(key.compareTo(keyValue)==0){
-				System.out.println("ret cntr");
 				return center;
 			}
 			else if(key.compareTo(keyValue)<0){
-				System.out.println("ret left part start="+start+" end="+end);
 				if(key instanceof SQLInteger) {
 					start = center + 1;
 				} else {
@@ -130,7 +128,6 @@ public abstract class AbstractIndexElement<T extends AbstractSQLValue>{
 				}
 			}
 			else if(key.compareTo(keyValue)>0){
-				System.out.println("ret right part start="+start+" end="+end);
 				if(key instanceof SQLInteger) {
 					end = center - 1;
 				} else {

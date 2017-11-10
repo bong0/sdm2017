@@ -139,7 +139,7 @@ public class CatalogManager {
 		if(name2oid.containsKey(name)){
 			return name2oid.get(name);
 		}
-		int oid =  ++LAST_OID;
+		int oid = ++LAST_OID;
 		name2oid.put(name, oid);
 		return oid;
 	}
