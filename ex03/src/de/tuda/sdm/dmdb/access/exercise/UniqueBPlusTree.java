@@ -57,18 +57,24 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 			// that is responsible for the range the key lies in
 			// use helper method?
 		}
-
+		int test =destPage.getIndexPage().getNumRecords();
+		System.out.println("dest Test: "+test);
+		System.out.println("Before: "+this.table.getRecordCount());
 		try {
 			// insert new leaf into designated leaf page
 			destPage.insert(key, record);
 		} catch (Exception e){
+			
 			System.out.println("Uncaught Exception, not implemented... ");
+			AbstractIndexElement newPage=null;
+			newPage.insert(key, record);
+			//int test =newPage.getIndexPage().getNumRecords();
+			
 			e.printStackTrace();
 			// case: we need to create a new page since it's full
 			// incorporate page into indexpage map and setup linking in tree
 		}
-
-
+		System.out.println("after: "+this.table.getRecordCount());
 		return true;
 	}
 	
