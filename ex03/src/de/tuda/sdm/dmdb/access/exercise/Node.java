@@ -41,9 +41,10 @@ public class Node<T extends AbstractSQLValue> extends NodeBase<T>{
 
 		T keyValue = (T) nodeRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
 
-		if(keyValue == key){
+		if(keyValue.equals(key)){
 			return nodeRecord;
 		}
+
 		return null;
 	}
 	

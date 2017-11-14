@@ -44,17 +44,14 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 
 		T key = (T) record.getValue(this.keyColumnNumber);
 		// traverse tree to find index position or that it's missing
-		RowIdentifier trvRid = getRidByKeyThroughTraversal(key, root);
+		RowIdentifier trvRid = getRidByKeyThroughTraversal(key, this.root);
 		if(trvRid.getSlotNumber() != -1){
 			return false; // record key already exists
 		}
 
 		// we need to insert into the page returned!
 		int destPageId = trvRid.getPageNumber();
-		System.out.println("dpageno "+destPageId);
 
-		System.out.println(this.getIndexElements().size());
-		System.out.println("requesting "+destPageId);
 		AbstractIndexElement destIndexElement = this.getIndexElement(destPageId);
 
 
@@ -65,7 +62,7 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 		} else {
 			AbstractIndexElement newTop = new Node(this);
 			this.indexElements.put(newTop.getPageNumber(), newTop);
-			System.out.println("added indexel to map "+newTop.getPageNumber());
+			this.setRoot(newTop);
 
 			AbstractIndexElement newLLeaf = new Leaf(this);
 			AbstractIndexElement newRLeaf = new Leaf(this);
@@ -73,10 +70,7 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 			// add new leafs to index hashmap
 			this.indexElements.put(newLLeaf.getPageNumber(), newLLeaf);
 			this.indexElements.put(newRLeaf.getPageNumber(), newRLeaf);
-			System.out.println("added indexel to map "+newLLeaf.getPageNumber());
-			System.out.println("added indexel to map "+newRLeaf.getPageNumber());
 
-			System.out.println("SPLIT!");
 
 			// elevate max elements into new top
 			AbstractRecord lLeafPtrRec = this.getNodeRecPrototype();
@@ -102,34 +96,39 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 			AbstractRecord tmpRec = this.nodeRecPrototype.clone();
 			element.getIndexPage().read(retpos, tmpRec);
 			int childPageNo = ((SQLInteger)tmpRec.getValue(PAGE_POS)).getValue();
-			getRidByKeyThroughTraversal(key, this.getIndexElement(childPageNo));
+			return getRidByKeyThroughTraversal(key, this.getIndexElement(childPageNo));
 		} else {
 			if(element.lookup(key) == null){
-				System.out.println("elpageno "+element.getPageNumber());
 				// exact key was not found
 				return new RowIdentifier(element.getPageNumber(), -1);
 			} else {
 				return new RowIdentifier(element.getPageNumber(), retpos);
 			}
 		}
-		return null;
+
 	}
+
 
 	@Override
 	public AbstractRecord lookup(T key) {
-		AbstractRecord leafRecFound = root.lookup(key); // does internal recursive binsearch
+		RowIdentifier foundIndexRid = getRidByKeyThroughTraversal(key, root);
 
 		// check also if record found matches length of a leaf record
-		if(leafRecFound == null || leafRecFound.getValues().length != 3){
+		if(foundIndexRid.getSlotNumber() == -1){
 			return null;
 		}
 
-		SQLInteger pageno = (SQLInteger) leafRecFound.getValue(PAGE_POS);
-		SQLInteger slotno = (SQLInteger) leafRecFound.getValue(SLOT_POS);
+		AbstractIndexElement leaf = this.getIndexElement(foundIndexRid.getPageNumber());
+		// now retrieve leaf rec
+		AbstractRecord lr = leaf.lookup(key);
+		SQLInteger datapageno = (SQLInteger) lr.getValue(PAGE_POS);
+		SQLInteger dataslotno = (SQLInteger) lr.getValue(SLOT_POS);
+
 
 
 		// now that we have the rowid => look up actual data
-		return this.table.lookup(pageno.getValue(), slotno.getValue());
+		//System.out.println(this.table.
+		return this.table.lookup(datapageno.getValue(), dataslotno.getValue());
 	}
 
 }

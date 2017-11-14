@@ -81,7 +81,7 @@ public class MyTestUniqueBPlusTree extends TestCase{
 	}
 
 	public void testIndexEnforce2ndlevel(){
-		int ENTRIES_CREATE=6000;
+		int ENTRIES_CREATE=100;
 
 		AbstractRecord record1 = new Record(2);
 		record1.setValue(0, new SQLInteger(-1));
@@ -99,17 +99,20 @@ public class MyTestUniqueBPlusTree extends TestCase{
 			index.insert(recTmp);
 		}
 
-		Assert.assertEquals(index.getTable().getRecordCount(), ENTRIES_CREATE); // verify all recs were written to datastore
+		Assert.assertEquals(ENTRIES_CREATE, index.getTable().getRecordCount()); // verify all recs were written to datastore
 
 		// test lookup of one of the records inserted late
-		SQLInteger PROBE_NO=new SQLInteger(ENTRIES_CREATE-200);
+		SQLInteger PROBE_NO=new SQLInteger(ENTRIES_CREATE-2);
 		AbstractRecord record1Cmp = index.lookup(PROBE_NO);
+		Assert.assertNotEquals(null, record1Cmp);
 		record1.setValue(0, PROBE_NO);
 		Assert.assertEquals(record1, record1Cmp);
 
 
 		// lookup invalid key
-		Assert.assertEquals(index.lookup(new SQLInteger(ENTRIES_CREATE+1)), null);
+		Assert.assertEquals(null, index.lookup(new SQLInteger(ENTRIES_CREATE+1)));
+		Assert.assertEquals(null, index.lookup(new SQLInteger(-1)));
+
 
 		//index.print();
 
