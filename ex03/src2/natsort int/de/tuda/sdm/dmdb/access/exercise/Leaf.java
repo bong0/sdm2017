@@ -35,11 +35,7 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 
 		int foundPos = this.binarySearch(key);
 
-		try {
-			this.indexPage.read(foundPos, leafRecord);
-		} catch (IllegalArgumentException e){
-			return null; // page is likely empty
-		}
+		this.indexPage.read(foundPos, leafRecord);
 
 		T keyValue = (T)leafRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
 

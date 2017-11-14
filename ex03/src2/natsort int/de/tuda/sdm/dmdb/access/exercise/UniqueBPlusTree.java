@@ -58,7 +58,7 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 			destPage.insert(key, record);
 		} else {
 			AbstractIndexElement newTop = new Node(this);
-			//addIndexElement
+			addIndexElement
 
 		}
 		System.out.println("after: "+this.table.getRecordCount());
@@ -82,7 +82,6 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 				return new RowIdentifier(element.getPageNumber(), retpos);
 			}
 		}
-		return null;
 	}
 
 	@Override

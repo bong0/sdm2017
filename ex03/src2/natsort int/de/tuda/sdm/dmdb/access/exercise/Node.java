@@ -31,11 +31,23 @@ public class Node<T extends AbstractSQLValue> extends NodeBase<T>{
 
 		AbstractRecord nodeRecord = this.uniqueBPlusTree.getNodeRecPrototype().clone();
 
+		// FIXME use this.binarySearch(); instead
+		//int nextIndex = this.binarySearch(key);
 		int foundPos = this.binarySearch(key);
 		this.indexPage.read(foundPos, nodeRecord);
 
+		System.out.println("fillgrade of node "+this.indexPage.getNumRecords());
 		T keyValue = (T) nodeRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
+/*
+		for(int i=0; i<this.indexPage.getNumRecords();++i){
+			this.indexPage.read(i, nodeRecord);
 
+			SQLInteger keyValue = (SQLInteger)nodeRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
+
+			if(keyValue == key){
+				return nodeRecord;
+			}
+		} */
 		if(keyValue == key){
 			return nodeRecord;
 		}

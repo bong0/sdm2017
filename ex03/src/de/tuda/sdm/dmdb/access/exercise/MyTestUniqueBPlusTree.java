@@ -1,18 +1,16 @@
-package de.tuda.sdm.dmdb.test.access;
-
-import org.junit.Assert;
+package de.tuda.sdm.dmdb.access.exercise;
 
 import de.tuda.sdm.dmdb.access.AbstractTable;
 import de.tuda.sdm.dmdb.access.AbstractUniqueIndex;
 import de.tuda.sdm.dmdb.access.HeapTable;
-import de.tuda.sdm.dmdb.access.exercise.UniqueBPlusTree;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.Record;
 import de.tuda.sdm.dmdb.storage.types.SQLInteger;
 import de.tuda.sdm.dmdb.storage.types.SQLVarchar;
 import de.tuda.sdm.dmdb.test.TestCase;
+import org.junit.Assert;
 
-public class TestUniqueBPlusTree extends TestCase{
+public class MyTestUniqueBPlusTree extends TestCase{
 	
 	/**
 	 * Insert three records and reads them again using a SQLInteger index
@@ -37,7 +35,7 @@ public class TestUniqueBPlusTree extends TestCase{
 		index.insert(record2);
 		index.insert(record3);
 		//index.print();
-		
+
 		AbstractRecord record1Cmp = index.lookup((SQLInteger) record1.getValue(0));
 		Assert.assertEquals(record1, record1Cmp);
 		
@@ -52,6 +50,7 @@ public class TestUniqueBPlusTree extends TestCase{
 	 * Insert three records and reads them again using a SQLVarchar index
 	 */
 	public void testIndexSimple2(){
+
 		AbstractRecord record1 = new Record(2);
 		record1.setValue(0, new SQLInteger(1));
 		record1.setValue(1, new SQLVarchar("Hello111", 10));
@@ -70,8 +69,7 @@ public class TestUniqueBPlusTree extends TestCase{
 		index.insert(record1);
 		index.insert(record2);
 		index.insert(record3);
-		//index.print();
-		
+
 		AbstractRecord record1Cmp = index.lookup((SQLVarchar) record1.getValue(1));
 		Assert.assertEquals(record1, record1Cmp);
 		
@@ -81,14 +79,40 @@ public class TestUniqueBPlusTree extends TestCase{
 		AbstractRecord record3Cmp = index.lookup((SQLVarchar) record3.getValue(1));
 		Assert.assertEquals(record3, record3Cmp);
 	}
-	
-	public void testCompareTo(){
-        Integer zeroInt = 0;
-        Integer oneInt = 1;
-        SQLInteger zero = new SQLInteger(0);
-        SQLInteger one = new SQLInteger(1);
 
-        Assert.assertEquals(zeroInt.compareTo(oneInt), zero.compareTo(one));
-    }
-	
+	public void testIndexEnforce2ndlevel(){
+		int ENTRIES_CREATE=6000;
+
+		AbstractRecord record1 = new Record(2);
+		record1.setValue(0, new SQLInteger(-1));
+		record1.setValue(1, new SQLVarchar("Hello.", 10));
+
+		AbstractTable table = new HeapTable(record1.clone());
+
+		// new index by first attrib (sqlint)
+		AbstractUniqueIndex<SQLInteger> index = new UniqueBPlusTree<SQLInteger>(table, 0, 1);
+
+		for(int i=1; i<=ENTRIES_CREATE; i++){
+			AbstractRecord recTmp = record1.clone();
+			recTmp.setValue(0, new SQLInteger(i));
+			recTmp.setValue(1, new SQLVarchar("Hello.", 10));
+			index.insert(recTmp);
+		}
+
+		Assert.assertEquals(index.getTable().getRecordCount(), ENTRIES_CREATE); // verify all recs were written to datastore
+
+		// test lookup of one of the records inserted late
+		SQLInteger PROBE_NO=new SQLInteger(ENTRIES_CREATE-200);
+		AbstractRecord record1Cmp = index.lookup(PROBE_NO);
+		record1.setValue(0, PROBE_NO);
+		Assert.assertEquals(record1, record1Cmp);
+
+
+		// lookup invalid key
+		Assert.assertEquals(index.lookup(new SQLInteger(ENTRIES_CREATE+1)), null);
+
+		//index.print();
+
+	}
+
 }
