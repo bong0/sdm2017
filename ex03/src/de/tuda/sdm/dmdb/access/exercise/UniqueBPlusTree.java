@@ -1,6 +1,7 @@
 package de.tuda.sdm.dmdb.access.exercise;
 
 import de.tuda.sdm.dmdb.access.AbstractTable;
+import de.tuda.sdm.dmdb.access.RowIdentifier;
 import de.tuda.sdm.dmdb.access.UniqueBPlusTreeBase;
 import de.tuda.sdm.dmdb.access.AbstractIndexElement;
 import de.tuda.sdm.dmdb.access.exercise.Node;
@@ -42,42 +43,47 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 	public boolean insert(AbstractRecord record) {
 
 		T key = (T) record.getValue(this.keyColumnNumber);
-		if(this.lookup(key) != null){
+		// traverse tree to find index position or that it's missing
+		RowIdentifier trvRid = getRidByKeyThroughTraversal(key, root);
+		if(trvRid.getSlotNumber() != -1){
 			return false; // record key already exists
 		}
 
-		AbstractIndexElement destPage=null;
-		// determine page to insert in
-		// case: root is not yet an inner node, all keys are on one leaf/level
-		if(this.getRoot() instanceof Leaf) {
-			destPage = this.getRoot();
-		} else {
-			
-			// Traverse tree recursively finding the last inner node ...
-			// that is responsible for the range the key lies in
-			// use helper method?
-		}
-		int test =destPage.getIndexPage().getNumRecords();
-		System.out.println("dest Test: "+test);
-		System.out.println("Before: "+this.table.getRecordCount());
-		try {
+		// we need to insert into the page returned!
+		int destPageId = trvRid.getPageNumber();
+		AbstractIndexElement destPage = this.getIndexElement(destPageId);
+
+		if(!destPage.isFull()){
 			// insert new leaf into designated leaf page
 			destPage.insert(key, record);
-		} catch (Exception e){
-			
-			System.out.println("Uncaught Exception, not implemented... ");
-			AbstractIndexElement newPage=null;
-			newPage.insert(key, record);
-			//int test =newPage.getIndexPage().getNumRecords();
-			
-			e.printStackTrace();
-			// case: we need to create a new page since it's full
-			// incorporate page into indexpage map and setup linking in tree
+		} else {
+			AbstractIndexElement newTop = new Node(this);
+			addIndexElement
+
 		}
 		System.out.println("after: "+this.table.getRecordCount());
 		return true;
 	}
-	
+
+	/* Returns a row id of index slot */
+	private RowIdentifier getRidByKeyThroughTraversal(T key, AbstractIndexElement element){
+		int retpos = element.binarySearch(key);
+		// if this is a node we're in => fetch child page no pointed to by the record at retpos and recurse
+		if(element instanceof Node){
+			AbstractRecord tmpRec = this.nodeRecPrototype.clone();
+			element.getIndexPage().read(retpos, tmpRec);
+			int childPageNo = ((SQLInteger)tmpRec.getValue(PAGE_POS)).getValue();
+			getRidByKeyThroughTraversal(key, this.getIndexElement(childPageNo));
+		} else {
+			if(element.lookup(key) == null){
+				// exact key was not found
+				return new RowIdentifier(element.getPageNumber(), -1);
+			} else {
+				return new RowIdentifier(element.getPageNumber(), retpos);
+			}
+		}
+	}
+
 	@Override
 	public AbstractRecord lookup(T key) {
 		AbstractRecord leafRecFound = root.lookup(key); // does internal recursive binsearch
