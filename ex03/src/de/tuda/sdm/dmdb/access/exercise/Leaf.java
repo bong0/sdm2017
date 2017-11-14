@@ -60,6 +60,9 @@ public class Leaf<T extends AbstractSQLValue> extends LeafBase<T>{
 		if(lookup(key) != null){
 			return false; // record with that key exists
 		}
+		if(this.isFull()){
+			throw new IllegalArgumentException("Leaf is full, split me");
+		}
 
 		AbstractRecord leafRec = this.uniqueBPlusTree.getLeafRecPrototype().clone();
 

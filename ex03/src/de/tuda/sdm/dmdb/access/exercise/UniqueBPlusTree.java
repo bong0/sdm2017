@@ -51,17 +51,46 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 
 		// we need to insert into the page returned!
 		int destPageId = trvRid.getPageNumber();
-		AbstractIndexElement destPage = this.getIndexElement(destPageId);
+		System.out.println("dpageno "+destPageId);
 
-		if(!destPage.isFull()){
+		System.out.println(this.getIndexElements().size());
+		System.out.println("requesting "+destPageId);
+		AbstractIndexElement destIndexElement = this.getIndexElement(destPageId);
+
+
+		/* TODO: implement node -> node node split */
+		if(!destIndexElement.isFull()){
 			// insert new leaf into designated leaf page
-			destPage.insert(key, record);
+			destIndexElement.insert(key, record);
 		} else {
 			AbstractIndexElement newTop = new Node(this);
-			//addIndexElement
+			this.indexElements.put(newTop.getPageNumber(), newTop);
+			System.out.println("added indexel to map "+newTop.getPageNumber());
 
+			AbstractIndexElement newLLeaf = new Leaf(this);
+			AbstractIndexElement newRLeaf = new Leaf(this);
+			destIndexElement.split(newLLeaf, newRLeaf);
+			// add new leafs to index hashmap
+			this.indexElements.put(newLLeaf.getPageNumber(), newLLeaf);
+			this.indexElements.put(newRLeaf.getPageNumber(), newRLeaf);
+			System.out.println("added indexel to map "+newLLeaf.getPageNumber());
+			System.out.println("added indexel to map "+newRLeaf.getPageNumber());
+
+			System.out.println("SPLIT!");
+
+			// elevate max elements into new top
+			AbstractRecord lLeafPtrRec = this.getNodeRecPrototype();
+			lLeafPtrRec.setValue(KEY_POS, newLLeaf.getMaxKey());
+			lLeafPtrRec.setValue(PAGE_POS, new SQLInteger(newLLeaf.getPageNumber()));
+			AbstractRecord rLeafPtrRec = this.getNodeRecPrototype();
+			rLeafPtrRec.setValue(KEY_POS, newRLeaf.getMaxKey());
+			rLeafPtrRec.setValue(PAGE_POS, new SQLInteger(newRLeaf.getPageNumber()));
+
+			newTop.insert(newLLeaf.getMaxKey(), lLeafPtrRec);
+			newTop.insert(newRLeaf.getMaxKey(), rLeafPtrRec);
+
+			insert(record);
 		}
-		System.out.println("after: "+this.table.getRecordCount());
 		return true;
 	}
 
@@ -76,6 +105,7 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends UniqueBPlusTree
 			getRidByKeyThroughTraversal(key, this.getIndexElement(childPageNo));
 		} else {
 			if(element.lookup(key) == null){
+				System.out.println("elpageno "+element.getPageNumber());
 				// exact key was not found
 				return new RowIdentifier(element.getPageNumber(), -1);
 			} else {

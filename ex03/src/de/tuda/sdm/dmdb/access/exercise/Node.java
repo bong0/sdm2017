@@ -32,7 +32,12 @@ public class Node<T extends AbstractSQLValue> extends NodeBase<T>{
 		AbstractRecord nodeRecord = this.uniqueBPlusTree.getNodeRecPrototype().clone();
 
 		int foundPos = this.binarySearch(key);
-		this.indexPage.read(foundPos, nodeRecord);
+
+		try {
+			this.indexPage.read(foundPos, nodeRecord);
+		} catch (IllegalArgumentException e){
+			return null; // page is likely empty
+		}
 
 		T keyValue = (T) nodeRecord.getValue(UniqueBPlusTreeBase.KEY_POS);
 
@@ -45,21 +50,14 @@ public class Node<T extends AbstractSQLValue> extends NodeBase<T>{
 	@Override
 	public boolean insert(T key, AbstractRecord record){
 
-		//TODO: implement this method
-		if(this.isFull()){
-			//split the nodes 
-		}
 		if(lookup(key) != null){
 			return false; // record with that key exists
 		}
-		AbstractRecord nodeRec = this.uniqueBPlusTree.getNodeRecPrototype().clone();
-		RowIdentifier newRid = this.uniqueBPlusTree.getTable().insert(record);
-		
-		nodeRec.setValue(UniqueBPlusTreeBase.KEY_POS, key);
-		nodeRec.setValue(UniqueBPlusTreeBase.PAGE_POS, new SQLInteger(newRid.getPageNumber()));
-		System.out.println("fillgrade BEFORE adding(NODE) " +this.indexPage.getNumRecords());
-		this.indexPage.insert(nodeRec);
-		System.out.println("fillgrade BEFORE adding(NODE) " +this.indexPage.getNumRecords());
+		if(this.isFull()){
+			throw new IllegalArgumentException("Node is full, split me");
+		}
+
+		this.indexPage.insert(record);
 		return true;
 	}
 	
