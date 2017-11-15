@@ -1,0 +1,15 @@
+[
+  {
+    "name": "SDM_Exercise04",
+    "params": {
+      "source_files": ["src/de/tuda/sdm/dmdb/sql/operator/exercise/TableScan.java", "src/de/tuda/sdm/dmdb/sql/operator/exercise/Selection.java", "src/de/tuda/sdm/dmdb/sql/operator/exercise/Projection.java", "src/de/tuda/sdm/dmdb/sql/operator/exercise/EquiJoin.java"],
+      "java_files": ["TableScan.java", "Selection.java", "Projection.java", "EquiJoin.java"],
+      "junit_test_fqns": ["de.tuda.sdm.dmdb.test.sql.TestSql"],
+      "testing_jar": "lib/SDM_Exercise_04.jar:lib/SDM_Exercise_04_commonBase.jar:lib/antlr-3.3-complete.jar",
+      "junit_jar_path": "lib//junit-4.12.jar",
+      "hamcrest_jar_path": "lib//hamcrest-core-1.3.jar",
+      "java_path": "/usr/bin/java",
+      "javac_path": "/usr/bin/javac"
+    }
+  }
+]
