@@ -16,17 +16,22 @@ public class TableScan extends TableScanBase {
 
 	@Override
 	public void open() {
-		//TODO: implement this method
+		this.tableIter = this.table.iterator();
 	}
 	
 	@Override
 	public AbstractRecord next() {
-		//TODO: implement this method
+
+		while(this.tableIter != null && this.tableIter.hasNext()){
+			AbstractRecord tmp = this.tableIter.next();
+			return tmp.clone();
+		}
 		return null;
 	}
 	
 	@Override
 	public void close() {
-		//TODO: implement this method
+
+		this.tableIter=null;
 	}
 }

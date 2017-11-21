@@ -54,7 +54,8 @@ public class TestSql extends TestCase{
 		//first SELECT statement
 		SelectStatement selectStmt = (SelectStatement)this.compile("SELECT a, c FROM t4, t5 WHERE b=c AND d=2");
 		this.execute(selectStmt);
-		
+
+		System.out.println("Result set retrieved:");
 		for(AbstractRecord rec: selectStmt.getResultSet()){
 			System.out.println(rec);
 		}
@@ -64,7 +65,8 @@ public class TestSql extends TestCase{
 		//second SELECT statement
 		selectStmt = (SelectStatement)this.compile("SELECT a,b FROM t4 WHERE a=2");
 		this.execute(selectStmt);
-		
+
+		System.out.println("Result set retrieved:");
 		for(AbstractRecord rec: selectStmt.getResultSet()){
 			System.out.println(rec);
 		}

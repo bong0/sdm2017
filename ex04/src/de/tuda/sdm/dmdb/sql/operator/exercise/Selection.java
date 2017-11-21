@@ -15,17 +15,24 @@ public class Selection extends SelectionBase {
 
 	@Override
 	public void open() {
-		//TODO: implement this method
+		child.open();
 	}
 	
 	@Override
 	public AbstractRecord next() {
-		//TODO: implement this method
+
+		AbstractRecord tmpRec=null;
+		while((tmpRec = child.next()) != null){
+			if(tmpRec.getValue(attribute).equals(constant)){
+				return tmpRec.clone();
+			} else {
+			}
+		}
 		return null;
 	}
 	
 	@Override
 	public void close() {
-		//TODO: implement this method
+		child.close();
 	}
 }
