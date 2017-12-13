@@ -55,6 +55,34 @@ public class TestNaiveBitmapIndex extends TestCase{
 		Assert.assertTrue(result.size() == 2);
 		Assert.assertEquals(record3, result.get(0));
 		Assert.assertEquals(record3, result.get(1));
-		
+
+		// check if null returned when range start is > start end;
+		result = index.rangeLookup(new SQLInteger(5), new SQLInteger(1));
+		Assert.assertEquals(null, result);
+
+		// check point range
+		result = index.rangeLookup(new SQLInteger(1), new SQLInteger(1));
+		Assert.assertEquals(1, result.size());
+
+		// check no entries in range but range valid
+		AbstractRecord record5 = new Record(2);
+		record5.setValue(0, new SQLInteger(10));
+		record5.setValue(1, new SQLVarchar("Hello11328479", 10));
+		table.insert(record5);
+		AbstractBitmapIndex<SQLInteger> index2 = new NaiveBitmapIndex<SQLInteger>(table, 0);
+		result = index2.rangeLookup(new SQLInteger(5), new SQLInteger(9));
+		Assert.assertEquals(0, result.size());
+		result = index2.rangeLookup(new SQLInteger(3), new SQLInteger(10));
+
+		System.out.println("--------");
+		System.out.println(result);
+
+		Assert.assertEquals(3, result.size());
+		Assert.assertEquals(record3, result.get(0));
+		Assert.assertEquals(record3, result.get(1));
+		Assert.assertEquals(record5, result.get(2));
+
+
+
 	}
 }
