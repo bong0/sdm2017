@@ -3,6 +3,7 @@ package de.tuda.sdm.dmdb.access.exercise;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,11 +39,41 @@ public class ApproximateBitmapIndex<T extends AbstractSQLValue> extends Abstract
 	@Override
 	protected void bulkLoadIndex() {
 		// TODO implement this method	
+		//determine length of bitmaps
+				int bitmapLength = this.getTable().getRecordCount(); // bitmap length = record count in naive approach
+				//determine number of unique values (count of bitmaps)
+				HashSet<T> columnHashSet = new HashSet<T>(); // t is the specific type of the key (subclass of abstractsqlvalue)
+				Iterator<AbstractRecord> tableIt = this.getTable().iterator();
+				while(tableIt.hasNext()){
+					AbstractRecord rec = tableIt.next();
+					columnHashSet.add((T)rec.getValue(this.keyColumnNumber));
+				}
+				int bitmapCount = columnHashSet.size();
+
+				// iterate over each unique value and create a bitmap for it
+				Iterator<T> bitSetNameIt = columnHashSet.iterator();
+				while(bitSetNameIt.hasNext()){
+					//shortening the halving the size of each bitmap
+					this.bitMaps.put(bitSetNameIt.next(), new BitSet(bitmapLength/2));
+				}
+				// fill bitmaps by iterating over table again
+				tableIt = this.getTable().iterator(); // get new iterator from front of table
+				int rowNumner = 0;
+				while(tableIt.hasNext()){
+					AbstractRecord rec = tableIt.next();
+					T key = (T)rec.getValue(this.getKeyColumnNumber());
+					//function to fill the bitmaps. (row number) modulo (half of bitmaps size)
+					this.bitMaps.get(key).set(rowNumner % (bitmapLength/2));
+					rowNumner++; // we examine the next row now
+
+					System.out.println(bitMaps.get(key));
+				}
 	}
 
 	@Override
 	public List<AbstractRecord> rangeLookup(T startKey, T endKey) {
 		// TODO implement this method
+		
 		return null;
 	}
 
