@@ -74,8 +74,6 @@ public class TestNaiveBitmapIndex extends TestCase{
 		Assert.assertEquals(0, result.size());
 		result = index2.rangeLookup(new SQLInteger(3), new SQLInteger(10));
 
-		System.out.println("--------");
-		System.out.println(result);
 
 		Assert.assertEquals(3, result.size());
 		Assert.assertEquals(record3, result.get(0));

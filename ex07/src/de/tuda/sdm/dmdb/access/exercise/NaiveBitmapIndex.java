@@ -49,13 +49,13 @@ public class NaiveBitmapIndex<T extends AbstractSQLValue> extends AbstractBitmap
 		}
 		// fill bitmaps by iterating over table again
 		tableIt = this.getTable().iterator(); // get new iterator from front of table
-		int rowNumner = 0;
+		int rowNumber = 0;
 		while(tableIt.hasNext()){
 			AbstractRecord rec = tableIt.next();
 			T key = (T)rec.getValue(this.getKeyColumnNumber());
 
-			this.bitMaps.get(key).set(rowNumner);
-			rowNumner++; // we examine the next row now
+			this.bitMaps.get(key).set(rowNumber);
+			rowNumber++; // we examine the next row now
 
 			System.out.println(bitMaps.get(key));
 		}
