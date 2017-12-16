@@ -45,16 +45,58 @@ public class TestApproximateBitmapIndex extends TestCase{
 		
 		AbstractBitmapIndex<SQLInteger> index = new ApproximateBitmapIndex<SQLInteger>(table, 0, 2);
 		//index.print();
-		
+
 		List<AbstractRecord>  result = index.rangeLookup((SQLInteger) record1.getValue(0), (SQLInteger) record2.getValue(0));
 		Assert.assertTrue(result.size() == 2);
 		Assert.assertEquals(record1, result.get(0));
 		Assert.assertEquals(record2, result.get(1));
-		
+
 		result = index.rangeLookup((SQLInteger) record3.getValue(0), (SQLInteger) record4.getValue(0));
 		Assert.assertTrue(result.size() == 2);
 		Assert.assertEquals(record3, result.get(0));
 		Assert.assertEquals(record3, result.get(1));
-		
+
+		// check if null returned when range start is > start end;
+		result = index.rangeLookup(new SQLInteger(5), new SQLInteger(1));
+		Assert.assertEquals(null, result);
+
+		// check point range
+		result = index.rangeLookup(new SQLInteger(1), new SQLInteger(1));
+		Assert.assertEquals(1, result.size());
+
+		// check no entries in range but range valid
+		AbstractRecord record5 = new Record(2);
+		record5.setValue(0, new SQLInteger(10));
+		record5.setValue(1, new SQLVarchar("Hello11328479", 10));
+		table.insert(record5);
+
+		AbstractBitmapIndex<SQLInteger> index2 = new ApproximateBitmapIndex<>(table, 0, 3);
+		result = index2.rangeLookup(new SQLInteger(5), new SQLInteger(9));
+		Assert.assertEquals(0, result.size());
+		result = index2.rangeLookup(new SQLInteger(3), new SQLInteger(10));
+
+
+		Assert.assertEquals(3, result.size());
+		Assert.assertEquals(record3, result.get(0));
+		Assert.assertEquals(record3, result.get(1));
+		Assert.assertEquals(record5, result.get(2));
+
+// create some many demo records
+		for(int i=0; i< 100; i++) {
+			AbstractRecord r = new Record(2);
+			r.setValue(0, new SQLInteger(i));
+			r.setValue(1, new SQLVarchar("Hello11328479", 10));
+			table.insert(r);
+		}
+		AbstractBitmapIndex<SQLInteger> index3 = new ApproximateBitmapIndex<>(table, 0, 3);
+
+		result = index3.rangeLookup(new SQLInteger(5), new SQLInteger(5));
+		Assert.assertEquals(1, result.size());
+
+		result = index3.rangeLookup(new SQLInteger(40), new SQLInteger(51));
+		Assert.assertEquals(12, result.size());
+
+
+
 	}
 }

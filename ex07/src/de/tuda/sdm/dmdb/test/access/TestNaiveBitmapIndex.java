@@ -81,6 +81,22 @@ public class TestNaiveBitmapIndex extends TestCase{
 		Assert.assertEquals(record5, result.get(2));
 
 
+// create some many demo records
+		for(int i=0; i< 100; i++) {
+			AbstractRecord r = new Record(2);
+			r.setValue(0, new SQLInteger(i));
+			r.setValue(1, new SQLVarchar("Hello11328479", 10));
+			table.insert(r);
+		}
+		AbstractBitmapIndex<SQLInteger> index3 = new NaiveBitmapIndex<>(table, 0);
+
+		result = index3.rangeLookup(new SQLInteger(5), new SQLInteger(5));
+		Assert.assertEquals(1, result.size());
+
+		result = index3.rangeLookup(new SQLInteger(40), new SQLInteger(51));
+		Assert.assertEquals(12, result.size());
+
+
 
 	}
 }

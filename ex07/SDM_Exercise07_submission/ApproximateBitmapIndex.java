@@ -1,10 +1,6 @@
 package de.tuda.sdm.dmdb.access.exercise;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import de.tuda.sdm.dmdb.access.AbstractBitmapIndex;
 import de.tuda.sdm.dmdb.access.AbstractTable;
@@ -38,12 +34,105 @@ public class ApproximateBitmapIndex<T extends AbstractSQLValue> extends Abstract
 	@Override
 	protected void bulkLoadIndex() {
 		// TODO implement this method	
+		//determine length of bitmaps
+				//determine number of unique values (count of bitmaps)
+				HashSet<T> columnHashSet = new HashSet<T>(); // t is the specific type of the key (subclass of abstractsqlvalue)
+				Iterator<AbstractRecord> tableIt = this.getTable().iterator();
+				while(tableIt.hasNext()){
+					AbstractRecord rec = tableIt.next();
+					columnHashSet.add((T)rec.getValue(this.keyColumnNumber));
+				}
+				int bitmapCount = columnHashSet.size();
+
+				// iterate over each unique value and create a bitmap for it
+				Iterator<T> bitSetNameIt = columnHashSet.iterator();
+				while(bitSetNameIt.hasNext()){
+					//shortening the halving the size of each bitmap
+					this.bitMaps.put(bitSetNameIt.next(), new BitSet(this.bitmapSize));
+				}
+				// fill bitmaps by iterating over table again
+				tableIt = this.getTable().iterator(); // get new iterator from front of table
+				int rowNumner = 0;
+				while(tableIt.hasNext()){
+					AbstractRecord rec = tableIt.next();
+					T key = (T)rec.getValue(this.getKeyColumnNumber());
+					//function to fill the bitmaps. (row number) modulo
+					this.bitMaps.get(key).set(rowNumner % this.bitmapSize);
+					rowNumner++; // we examine the next row now
+
+					System.out.println(bitMaps.get(key));
+				}
 	}
 
 	@Override
 	public List<AbstractRecord> rangeLookup(T startKey, T endKey) {
-		// TODO implement this method
-		return null;
+
+		// return null if invalid range specified
+		if(startKey.compareTo(endKey) > 0){
+			return null;
+		}
+
+		// determine all distinct values in the given range (create subset)
+		List<T> keysInRange = new LinkedList<>();
+		Iterator<T> allKeysIterator = getBitMaps().keySet().iterator();
+		while(allKeysIterator.hasNext()){
+			T curKey = allKeysIterator.next();
+			// this is essentially:
+			// startK<=curK becomes curK>startK
+			// curKey<=endKey becomes endKey>startK  (<0 means arg is greater than, 0 means equal)
+			if(startKey.compareTo(curKey) <= 0 && curKey.compareTo(endKey) <= 0){
+				keysInRange.add(curKey);
+			}
+		}
+
+		System.out.println("keysinrange "+keysInRange);
+
+		BitSet mergedBitMap = new BitSet(this.getTable().getRecordCount());
+
+		// for each key in range
+		Iterator<T> keysInRangeIterator = keysInRange.iterator();
+		while(keysInRangeIterator.hasNext()){
+			// init new list of possible rows
+			List<Integer> possibleRows = new LinkedList<>();
+
+			T curKey = keysInRangeIterator.next();
+			// for each row in bitmap
+			BitSet curKeyBitset = this.bitMaps.get(curKey);
+
+			// lookup all rows that have a 1 in the bitmap
+			for (int i = curKeyBitset.nextSetBit(0); i >= 0; i = curKeyBitset.nextSetBit(i+1)) {
+				// operate on index i here
+				if (i == Integer.MAX_VALUE) {
+					break; // or (i+1) would overflow
+				}
+
+				// determine possible rows for current index (reverse modulo)
+				for(int possibleIndex=i; possibleIndex < this.getTable().getRecordCount(); possibleIndex+=this.bitmapSize){
+					// check if key matches searched one (else it's false positive)
+					if(this.getTable().getRecordFromRowId(possibleIndex).getValue(this.keyColumnNumber).equals(curKey)){
+						// set rowid in fullsize bitmap
+						mergedBitMap.set(possibleIndex);
+					}
+				}
+
+			}
+
+		}
+
+		List<AbstractRecord> listOfRecordsInRange = new ArrayList<>();
+
+		// lookup all rows that have a 1 in the bitmap
+		for (int i = mergedBitMap.nextSetBit(0); i >= 0; i = mergedBitMap.nextSetBit(i+1)) {
+			// operate on index i here
+			if (i == Integer.MAX_VALUE) {
+				break; // or (i+1) would overflow
+			}
+
+			listOfRecordsInRange.add(this.getTable().getRecordFromRowId(i)); // fetch record by its row id in the bitmap index
+		}
+
+		return listOfRecordsInRange;
+
 	}
 
 }

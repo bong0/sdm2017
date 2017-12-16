@@ -35,7 +35,6 @@ public class ApproximateBitmapIndex<T extends AbstractSQLValue> extends Abstract
 	protected void bulkLoadIndex() {
 		// TODO implement this method	
 		//determine length of bitmaps
-				int bitmapLength = 4; // bitmap length = number of unique hash output values
 				//determine number of unique values (count of bitmaps)
 				HashSet<T> columnHashSet = new HashSet<T>(); // t is the specific type of the key (subclass of abstractsqlvalue)
 				Iterator<AbstractRecord> tableIt = this.getTable().iterator();
@@ -49,7 +48,7 @@ public class ApproximateBitmapIndex<T extends AbstractSQLValue> extends Abstract
 				Iterator<T> bitSetNameIt = columnHashSet.iterator();
 				while(bitSetNameIt.hasNext()){
 					//shortening the halving the size of each bitmap
-					this.bitMaps.put(bitSetNameIt.next(), new BitSet(bitmapLength));
+					this.bitMaps.put(bitSetNameIt.next(), new BitSet(this.bitmapSize));
 				}
 				// fill bitmaps by iterating over table again
 				tableIt = this.getTable().iterator(); // get new iterator from front of table
@@ -58,7 +57,7 @@ public class ApproximateBitmapIndex<T extends AbstractSQLValue> extends Abstract
 					AbstractRecord rec = tableIt.next();
 					T key = (T)rec.getValue(this.getKeyColumnNumber());
 					//function to fill the bitmaps. (row number) modulo
-					this.bitMaps.get(key).set(rowNumner % bitmapLength);
+					this.bitMaps.get(key).set(rowNumner % this.bitmapSize);
 					rowNumner++; // we examine the next row now
 
 					System.out.println(bitMaps.get(key));
@@ -81,7 +80,6 @@ public class ApproximateBitmapIndex<T extends AbstractSQLValue> extends Abstract
 			// this is essentially:
 			// startK<=curK becomes curK>startK
 			// curKey<=endKey becomes endKey>startK  (<0 means arg is greater than, 0 means equal)
-			System.out.println("comparing start to cur "+ startKey+ " "+curKey);
 			if(startKey.compareTo(curKey) <= 0 && curKey.compareTo(endKey) <= 0){
 				keysInRange.add(curKey);
 			}
@@ -109,7 +107,7 @@ public class ApproximateBitmapIndex<T extends AbstractSQLValue> extends Abstract
 				}
 
 				// determine possible rows for current index (reverse modulo)
-				for(int possibleIndex=i; possibleIndex < this.getTable().getRecordCount(); possibleIndex+=4){
+				for(int possibleIndex=i; possibleIndex < this.getTable().getRecordCount(); possibleIndex+=this.bitmapSize){
 					// check if key matches searched one (else it's false positive)
 					if(this.getTable().getRecordFromRowId(possibleIndex).getValue(this.keyColumnNumber).equals(curKey)){
 						// set rowid in fullsize bitmap

@@ -80,7 +80,6 @@ public class NaiveBitmapIndex<T extends AbstractSQLValue> extends AbstractBitmap
 			// this is essentially:
 			// startK<=curK becomes curK>startK
 			// curKey<=endKey becomes endKey>startK  (<0 means arg is greater than, 0 means equal)
-			System.out.println("comparing start to cur "+ startKey+ " "+curKey);
 			if(startKey.compareTo(curKey) <= 0 && curKey.compareTo(endKey) <= 0){
 				keysInRange.add(curKey);
 			}
