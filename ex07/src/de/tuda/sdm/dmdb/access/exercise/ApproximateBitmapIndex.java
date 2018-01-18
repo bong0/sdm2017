@@ -92,7 +92,7 @@ public class ApproximateBitmapIndex<T extends AbstractSQLValue> extends Abstract
 		// for each key in range
 		Iterator<T> keysInRangeIterator = keysInRange.iterator();
 		while(keysInRangeIterator.hasNext()){
-			// init new list of possible rows
+			// init new list of possible rows (including false-positive
 			List<Integer> possibleRows = new LinkedList<>();
 
 			T curKey = keysInRangeIterator.next();

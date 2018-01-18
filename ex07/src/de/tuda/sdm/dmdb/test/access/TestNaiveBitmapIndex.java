@@ -82,7 +82,7 @@ public class TestNaiveBitmapIndex extends TestCase{
 
 
 // create some many demo records
-		for(int i=0; i< 100; i++) {
+		for(int i=99; i>=0; i--) {
 			AbstractRecord r = new Record(2);
 			r.setValue(0, new SQLInteger(i));
 			r.setValue(1, new SQLVarchar("Hello11328479", 10));
