@@ -28,14 +28,18 @@ public class TestHashJoin extends TestCase{
 
 		int numRecords = 100;
 		for (int i = 0; i < numRecords; i++) {
-			AbstractRecord record = new Record(2);
-			record.setValue(0, new SQLInteger(i));
-			record.setValue(1, new SQLInteger(i));
+			AbstractRecord recordl = new Record(2);
+			recordl.setValue(0, new SQLInteger(i));
+			recordl.setValue(1, new SQLInteger(i));
 
-			htLeft.insert(record);
-			htRight.insert(record);
+			AbstractRecord recordr = new Record(2);
+			recordr.setValue(0, new SQLInteger(i));
+			recordr.setValue(1, new SQLInteger(i+5));
 
-			expectedResult.add(record.append(record));
+			htLeft.insert(recordl);
+			htRight.insert(recordr);
+
+			expectedResult.add(recordl.append(recordr));
 		}
 
 		TableScan tsLeft = new TableScan(htLeft);

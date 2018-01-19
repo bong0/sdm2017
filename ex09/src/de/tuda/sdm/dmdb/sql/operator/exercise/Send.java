@@ -76,9 +76,7 @@ public class Send extends SendBase {
 	public void close() {
 		// TODO: implement this method
 		// reverse what was done in open() - hint there is a helper method that you can use
-		System.out.println("Send is closing connections to peers");
 		closeConnectionsToPeers();
-		System.out.println("Send is closing child");
 		this.child.close();
 	}
 

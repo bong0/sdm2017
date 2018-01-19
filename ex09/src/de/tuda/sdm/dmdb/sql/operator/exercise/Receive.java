@@ -89,11 +89,8 @@ public class Receive extends ReceiveBase {
 	@Override
 	public void close() {
 		// reverse what was done in open()
-		System.out.println("closing child");
 		this.child.close();
-		System.out.println("Calling stopServer nodecount "+this.numPeers);
 		this.receiveServer.stopServer();
-		System.out.println("INFO: Receive handler for node "+this.nodeId+" finished close()");
 	}
 
 }
