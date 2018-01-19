@@ -68,6 +68,7 @@ public class Send extends SendBase {
 			return nextRec;
 		}
 
+
 		return null; // record was sent to remote, semantic is changed here; it doesn't indicate that send finished
 	}
 
@@ -75,8 +76,10 @@ public class Send extends SendBase {
 	public void close() {
 		// TODO: implement this method
 		// reverse what was done in open() - hint there is a helper method that you can use
+		System.out.println("Send is closing connections to peers");
 		closeConnectionsToPeers();
-		child.close();
+		System.out.println("Send is closing child");
+		this.child.close();
 	}
 
 }
