@@ -1,11 +1,5 @@
 package de.tuda.sdm.dmdb.test.sql;
 
-import org.junit.Assert;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
 import de.tuda.sdm.dmdb.access.exercise.HeapTable;
 import de.tuda.sdm.dmdb.sql.operator.Shuffle;
 import de.tuda.sdm.dmdb.sql.operator.exercise.TableScan;
@@ -13,8 +7,14 @@ import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.Record;
 import de.tuda.sdm.dmdb.storage.types.exercise.SQLInteger;
 import de.tuda.sdm.dmdb.test.TestCase;
+import org.junit.Assert;
 
-public class TestShuffle extends TestCase{
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+
+public class TestShuffleSinglePartition extends TestCase{
 
 	public void testShuffleSimple1() throws InterruptedException {
 
@@ -35,19 +35,9 @@ public class TestShuffle extends TestCase{
 			AbstractRecord recrod = new Record(1);
 			recrod.setValue(0, new SQLInteger(i));
 
-			if (i < numRecords/2) {
-				htable1.insert(recrod);
-			}else {
-				htable2.insert(recrod);
-			}
+			htable1.insert(recrod); // only insert records to one partition
 
-			int hashValue = i % 2;
-			if (hashValue == 0) {
-				expectedResult.add(recrod);
-			}
-			else {
-				expectedResult2.add(recrod);
-			}
+			expectedResult.add(recrod);
 
 		}
 
@@ -55,7 +45,7 @@ public class TestShuffle extends TestCase{
 		int port = 8000;
 		Map<Integer, String> nodeMap = new HashMap<Integer, String>();
 		nodeMap.put(nodeId, "localhost:"+port);
-		nodeMap.put(nodeId+1, "localhost:"+(port+1));
+		//nodeMap.put(nodeId+1, "localhost:"+(port+1));
 		int partitionColumn = 0;
 
 
@@ -71,7 +61,7 @@ public class TestShuffle extends TestCase{
 			shuffleOperator.close();
 		};
 
-		Runnable task2 = () -> {
+		/*Runnable task2 = () -> {
 			TableScan tableScan = new TableScan(htable2);
 			Shuffle shuffleOperator = new Shuffle(tableScan, nodeId+1, nodeMap, port+1, partitionColumn);
 			shuffleOperator.open();
@@ -80,18 +70,17 @@ public class TestShuffle extends TestCase{
 				resultList2.offer(next);
 			}
 			shuffleOperator.close();
-		};
+		};*/
 
 		Thread peer1 = new Thread(task1);
-		Thread peer2 = new Thread(task2);
-		peer1.start(); peer2.start();
-		peer1.join(); peer2.join();
-
+		//Thread peer2 = new Thread(task2);
+		peer1.start(); //peer2.start();
+		peer1.join(); //peer2.join();
 
 		System.out.println("Record list1: " + resultList);
 		System.out.println("Record list2: " + resultList2);
-		Assert.assertTrue(resultList.size() == numRecords / 2);
-		Assert.assertTrue(resultList2.size() == numRecords / 2);
+		Assert.assertTrue(resultList.size() == numRecords);
+		Assert.assertTrue(resultList2.size() == 0);
 		for (AbstractRecord abstractRecord : resultList) {
 			Assert.assertTrue(expectedResult.contains(abstractRecord));
 		}

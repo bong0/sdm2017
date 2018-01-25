@@ -42,6 +42,7 @@ public class Receive extends ReceiveBase {
 		}
 
 		// Attention: call open on child after starting receive server, so that sendOperator can connect
+		System.out.println("Starting  server recv for node id "+this.nodeId);
 		this.child.open();
 
 	}
@@ -52,46 +53,36 @@ public class Receive extends ReceiveBase {
 		//       and will be accessed by multiple Handler-Threads - take multi-threading into account where applicable!
 		// process local and received records...
 
-		// local first!
-		AbstractRecord nextLocalItem= this.child.next();
-		if(nextLocalItem != null){
-			return nextLocalItem;
-		}
-		//record was sent to remote or local finished
 
 		AbstractRecord nextRemoteItem = null;
-		while(true) {
-			synchronized(this.localCache) {
-				if(!this.localCache.isEmpty()) break;
-			}
+		while(this.localCache.peek() == null) {
 			// check if we finished processing of all records - hint: you can use this.finishedPeers
-			if(this.finishedPeers.get() >= this.numPeers && ((nextLocalItem = this.child.next()) == null)) {
+			if(this.finishedPeers.get() >= this.numPeers) {
 				return null; // all peers and local finished
-			}
-			if(nextLocalItem != null){
-				return nextLocalItem;
 			}
 
 			// spin around
 			try {
+				AbstractRecord nextLocalItem = this.child.next();
+				if(nextLocalItem != null){
+					return nextLocalItem;
+				}
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 
-		// peeking returned non null, so there is something in our queue!
-		synchronized (this.localCache) { // make this operation atomic; Take record out of queue
+		synchronized (localCache) { // make this operation atomic
 			nextRemoteItem = (this.localCache).poll();
 		}
 
 		if(nextRemoteItem != null){
-			return nextRemoteItem; // return item if it's valid
+			return nextRemoteItem;
 		} else {
 			System.err.println("ERROR: Queue should be filled but poll returned null; this shouldn't happen");
 		}
 
-		System.out.println("UNEXPECTED BAILOUT");
 		return null;
 	}
 

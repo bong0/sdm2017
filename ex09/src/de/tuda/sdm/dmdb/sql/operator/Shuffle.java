@@ -44,8 +44,6 @@ public class Shuffle extends UnaryOperator {
 
 
 	@Override
-	public void close() {
-		this.receiveOperator.close();
-	}
+	public void close() {this.receiveOperator.close(); }
 
 }
