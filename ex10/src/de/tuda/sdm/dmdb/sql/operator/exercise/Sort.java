@@ -32,19 +32,21 @@ public class Sort extends SortBase{
 
 		// readout sorted elements if finished
 		AbstractRecord nextRec = null;
+		System.out.println("sort got input "+nextRec);
 		while(true) {
 			if(sorted == false) {
 				nextRec = this.child.next();
-				System.out.println("read next"+nextRec);
 				if (nextRec == null) {
 					this.sorted = true;
+					System.out.println("sort outputs "+this.sortedRecords.peek());
 					return this.sortedRecords.poll();
 				}
 			} else {
+				System.out.println("sort outputs "+this.sortedRecords.peek());
 				return this.sortedRecords.poll();
 			}
 
-			this.sortedRecords.offer(nextRec);
+			this.sortedRecords.add(nextRec);
 		}
 
 	}

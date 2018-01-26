@@ -23,14 +23,32 @@ public class ReducerTask extends ReducerTaskBase {
 
 	@Override
 	public void run() {
+
+
+
 		// TODO: implement this method
 		// read data from input (Remember: There is a special operator to read data from a Table)
+		AbstractRecord proto = this.input.getPrototype();
 
-		// instantiate the reduce-operator
+		// instantiate the reducer-operator
+		ReducerBase reducer = null;
+		try {
+			reducer = this.reducerClass.newInstance();
+			reducer.setChild(new TableScan(this.input));
+		} catch (Exception e){
+			System.err.println("FATAL: caught exception on instantiating reducer: "+e.getMessage());
+			return;
+		}
+		reducer.open();
 
 		// process the input and write to the output
+		AbstractRecord reducerOutRec = null;
+		while((reducerOutRec = reducer.next()) != null) {
+			output.insert(reducerOutRec);
+		}
 
 		// processing done
+		reducer.close();
 
 	}
 

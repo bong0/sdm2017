@@ -34,7 +34,7 @@ public class MapperTask extends MapperTaskBase {
 		MapperBase mapper = null;
 		try {
 			mapper = this.mapperClass.newInstance();
-			mapper.setChild(new TableScan(input));
+			mapper.setChild(new TableScan(this.input));
 		} catch (Exception e){
 			System.err.println("FATAL: caught exception on instantiating mapper: "+e.getMessage());
 			return;

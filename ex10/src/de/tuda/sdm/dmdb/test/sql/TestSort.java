@@ -59,7 +59,9 @@ public class TestSort extends TestCase{
 		sort.close();
 		
 		Assert.assertEquals(expectedResult.size(), actualResult.size());
-		
+
+		System.out.println("exp "+expectedResult);
+		System.out.println("act "+actualResult);
 		for (int i = 0; i < actualResult.size(); i++) {
 			Integer value1 = expectedResult.get(i);
 			Integer value2 = actualResult.get(i);

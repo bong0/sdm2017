@@ -51,6 +51,9 @@ public class TestSinglePhaseMapReduce extends BaseMapReduceTestCase{
 
 		public void reduce(SQLVarchar key, Iterable<SQLInteger> values,
 				Queue<AbstractRecord> outList) {
+
+			System.out.println("Reducer called with key="+key+" vals:"+values);
+
 			int sum = 0;
 			for (SQLInteger val : values) {
 				sum += val.getValue();

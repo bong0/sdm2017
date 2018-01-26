@@ -32,11 +32,14 @@ import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
  */
 public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLValue, KEYOUT extends AbstractSQLValue, VALUEOUT extends AbstractSQLValue> extends ReducerBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT>{
 
+	Queue<VALUEIN> valueQueue;
+
 	@Override
 	public void open() {
 		// TODO: implement this method
 		// make sure to initialize ALL (inherited) member variables
-		this.nextList = new ConcurrentLinkedQueue<AbstractRecord>(); // from MapreduceOperator
+		this.nextList = new LinkedList<>(); // from MapreduceOperator
+		this.valueQueue = new LinkedList<>();
 		this.lastRecord = null;
 		this.child.open();
 	}
@@ -55,7 +58,6 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 			return this.nextList.poll();
 		}
 
-		Queue<VALUEIN> valueQueue = new LinkedList<>();
 
 		// retrieve next input record
 		AbstractRecord currentRecord = null;
@@ -63,6 +65,8 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 
 		while(true){
 			currentRecord = this.child.next();
+
+			System.out.println("reducer read record: "+currentRecord);
 
 			boolean key_switched = false;
 			if(lastRecord == null){
@@ -82,16 +86,25 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 			if(key_switched) {
 
 				this.reduce((KEYIN)this.lastRecord.getValue(KEY_COLUMN), valueQueue, this.nextList);
-
+				this.valueQueue.clear();
 				this.lastRecord = currentRecord; // now that reduction is done, switch lastRecord to the new group
+
+				if(currentRecord!=null) {
+					this.valueQueue.add((VALUEIN) currentRecord.getValue(VALUE_COLUMN));
+				}
+
 				if(!this.nextList.isEmpty()) {
 					return this.nextList.poll();
+				} else{
+					continue;
 				}
 			}
 
-
-			this.lastRecord = currentRecord; // update LastRecord
 			valueQueue.add((VALUEIN) currentRecord.getValue(VALUE_COLUMN));
+			this.lastRecord = currentRecord; // update LastRecord
+
+			System.out.println("Added to valuequeue: k="+this.lastRecord.getValue(KEY_COLUMN)+"  rec:"+currentRecord);
+
 		}
 		// invoke the reduce function on the input and pass in this.nextList to cache the output pairs there
 
