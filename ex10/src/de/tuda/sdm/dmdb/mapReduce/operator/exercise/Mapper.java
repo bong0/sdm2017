@@ -60,10 +60,6 @@ public class Mapper<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLV
 		}
 
 		return this.nextList.poll(); // this automatically returns null if also the local cache is empty
-
-
-		//System.err.println("UNEXPECTED BAILOUT OUT OF next()");
-		//return null;
 	}
 
 	@Override

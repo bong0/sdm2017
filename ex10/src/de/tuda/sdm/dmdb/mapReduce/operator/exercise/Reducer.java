@@ -1,8 +1,9 @@
 package de.tuda.sdm.dmdb.mapReduce.operator.exercise;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import de.tuda.sdm.dmdb.mapReduce.operator.MapReduceOperator;
 import de.tuda.sdm.dmdb.mapReduce.operator.ReducerBase;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
@@ -30,12 +31,14 @@ import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
  * @param <VALUEOUT> SQLValue type of the output value
  */
 public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLValue, KEYOUT extends AbstractSQLValue, VALUEOUT extends AbstractSQLValue> extends ReducerBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT>{
-	
+
 	@Override
 	public void open() {
 		// TODO: implement this method
 		// make sure to initialize ALL (inherited) member variables
-
+		this.nextList = new ConcurrentLinkedQueue<AbstractRecord>(); // from MapreduceOperator
+		this.lastRecord = null;
+		this.child.open();
 	}
 
 	@Override
@@ -47,13 +50,47 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 		// Implement the grouping of mapper-outputs here 
 		// You can assume that the input to the reducer is sorted. This makes the grouping operation easier. Keep this in mind if you write your own tests (make sure that input to reducer is sorted)
 
+		// first, clear cached records that already fell out of reduction so we can do the next reduction
+		if(!this.nextList.isEmpty()){
+			return this.nextList.poll();
+		}
+
+		Queue<VALUEIN> valueQueue = new LinkedList<>();
+
 		// retrieve next input record
+		AbstractRecord currentRecord = null;
 
-		// prepare input for the reduce function (group by)
 
+		while(true){
+			currentRecord = this.child.next();
+
+			boolean key_switched = false;
+			if(lastRecord == null && currentRecord == null){
+				return null; // no input was made, quit operator right away
+			}
+			else if(currentRecord == null){
+				key_switched=true; // this is the last item, we need to force a reduction!
+			}
+			else if(!this.lastRecord.getValue(KEY_COLUMN).equals(currentRecord.getValue(KEY_COLUMN))){
+				key_switched = true; // the key changed, trigger a reduction
+			}
+
+			if(key_switched) {
+				System.out.println("key change doing red");
+
+				this.reduce((KEYIN)this.lastRecord.getValue(KEY_COLUMN), valueQueue, this.nextList);
+
+				this.lastRecord = currentRecord; // now that reduction is done, switch lastRecord to the new group
+				if(!this.nextList.isEmpty()) {
+					return this.nextList.poll();
+				}
+			}
+
+
+			this.lastRecord = currentRecord; // update LastRecord
+			valueQueue.add((VALUEIN) currentRecord.getValue(VALUE_COLUMN));
+		}
 		// invoke the reduce function on the input and pass in this.nextList to cache the output pairs there
-
-		return null;
 
 	}
 
@@ -61,7 +98,8 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 	public void close() {
 		// TODO: implement this method
 		// reverse what was done in open()
-
+		this.child.close();
+		this.nextList.clear();
 	}
 
 }
