@@ -1,14 +1,11 @@
 package de.tuda.sdm.dmdb.mapReduce.task.exercise;
 
 import de.tuda.sdm.dmdb.access.exercise.HeapTable;
-import de.tuda.sdm.dmdb.mapReduce.operator.MapReduceOperator;
 import de.tuda.sdm.dmdb.mapReduce.operator.MapperBase;
 import de.tuda.sdm.dmdb.mapReduce.task.MapperTaskBase;
 import de.tuda.sdm.dmdb.sql.operator.exercise.TableScan;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
-
-import java.util.Iterator;
 
 /**
  * Defines what happens during the map-phase of a map-reduce job
@@ -28,7 +25,6 @@ public class MapperTask extends MapperTaskBase {
 	public void run() {
 		// TODO: implement this method
 		// read data from input (Remember: There is a special operator to read data from a Table)
-		AbstractRecord proto = this.input.getPrototype();
 
 		// instantiate the mapper-operator
 		MapperBase mapper = null;

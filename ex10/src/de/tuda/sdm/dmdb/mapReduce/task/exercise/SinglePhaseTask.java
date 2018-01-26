@@ -1,16 +1,16 @@
 package de.tuda.sdm.dmdb.mapReduce.task.exercise;
 
-import java.util.Comparator;
-import java.util.Map;
 import de.tuda.sdm.dmdb.access.exercise.HeapTable;
-import de.tuda.sdm.dmdb.sql.operator.Shuffle;
-import de.tuda.sdm.dmdb.sql.operator.exercise.Sort;
 import de.tuda.sdm.dmdb.mapReduce.operator.MapperBase;
 import de.tuda.sdm.dmdb.mapReduce.operator.ReducerBase;
 import de.tuda.sdm.dmdb.mapReduce.task.SinglePhaseTaskBase;
+import de.tuda.sdm.dmdb.sql.operator.Shuffle;
+import de.tuda.sdm.dmdb.sql.operator.exercise.Sort;
 import de.tuda.sdm.dmdb.sql.operator.exercise.TableScan;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
+
+import java.util.Map;
 
 /**
  * Defines what happens during the execution a map-reduce task
