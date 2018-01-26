@@ -1,0 +1,28 @@
+[
+  {
+    "name": "SDM_Exercise10 Problem1",
+    "params": {
+      "source_files": ["src/de/tuda/sdm/dmdb/sql/operator/exercise/Sort.java", "src/de/tuda/sdm/dmdb/mapReduce/operator/exercise/Mapper.java", "src/de/tuda/sdm/dmdb/mapReduce/operator/exercise/Reducer.java"],
+      "java_files": ["Sort.java", "Mapper.java", "Reducer.java"],
+      "junit_test_fqns": ["de.tuda.sdm.dmdb.test.sql.TestSuiteSQL", "de.tuda.sdm.dmdb.test.mapReduce.operator.TestSuiteMapReduceOperator"],
+      "testing_jar": "lib/SDM_Exercise_10.jar:lib/SDM_Exercise_10_commonBase.jar",
+      "junit_jar_path": "./lib/junit-4.12.jar",
+      "hamcrest_jar_path": "./lib/hamcrest-core-1.3.jar",
+      "java_path": "/usr/bin/java",
+      "javac_path": "/usr/bin/javac"
+    }
+  },
+  {
+    "name": "SDM_Exercise10 Problem2",
+    "params": {
+      "source_files": ["src/de/tuda/sdm/dmdb/sql/operator/exercise/Sort.java", "src/de/tuda/sdm/dmdb/mapReduce/operator/exercise/Mapper.java", "src/de/tuda/sdm/dmdb/mapReduce/operator/exercise/Reducer.java", "src/de/tuda/sdm/dmdb/mapReduce/task/exercise/MapperTask.java", "src/de/tuda/sdm/dmdb/mapReduce/task/exercise/ReducerTask.java", "src/de/tuda/sdm/dmdb/mapReduce/task/exercise/ShuffleSortTask.java", "src/de/tuda/sdm/dmdb/mapReduce/task/exercise/SinglePhaseTask.java"],
+      "java_files": ["MapperTask.java", "ReducerTask.java", "ShuffleSortTask.java", "SinglePhaseTask.java", "Sort.java", "Mapper.java", "Reducer.java"],
+      "junit_test_fqns": ["de.tuda.sdm.dmdb.test.mapReduce.TestSuiteMapReduce"],
+      "testing_jar": "lib/SDM_Exercise_10.jar:lib/SDM_Exercise_10_commonBase.jar",
+      "junit_jar_path": "./lib/junit-4.12.jar",
+      "hamcrest_jar_path": "./lib/hamcrest-core-1.3.jar",
+      "java_path": "/usr/bin/java",
+      "javac_path": "/usr/bin/javac"
+    }
+  }
+]
