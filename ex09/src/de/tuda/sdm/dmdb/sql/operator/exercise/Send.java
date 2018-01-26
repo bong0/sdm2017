@@ -1,15 +1,12 @@
 package de.tuda.sdm.dmdb.sql.operator.exercise;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.Map;
 
-import com.sun.tools.corba.se.idl.InvalidArgument;
 import de.tuda.sdm.dmdb.net.TCPClient;
 import de.tuda.sdm.dmdb.sql.operator.Operator;
 import de.tuda.sdm.dmdb.sql.operator.SendBase;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
-import de.tuda.sdm.dmdb.storage.types.exercise.SQLInteger;
 
 /**
  * Implementation of send operator

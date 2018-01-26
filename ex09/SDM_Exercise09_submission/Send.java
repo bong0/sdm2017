@@ -1,7 +1,6 @@
 package de.tuda.sdm.dmdb.sql.operator.exercise;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.Map;
 
 import de.tuda.sdm.dmdb.net.TCPClient;
@@ -35,6 +34,7 @@ public class Send extends SendBase {
 
 		// create a client socket for all peer nodes using information in nodeMap
 		for(Integer nodeId : nodeMap.keySet()){
+			if(nodeId == this.nodeId) continue; // DON'T connect to ourselves
 			String[] connInfoSplit = nodeMap.get(nodeId).split(":");
 			String host = connInfoSplit[0];
 			Integer port = Integer.parseInt(connInfoSplit[1]);
@@ -54,29 +54,33 @@ public class Send extends SendBase {
 
 		AbstractRecord nextRec = this.child.next();
 		if(nextRec == null) {
-			// reached end, close connections to peers
+			// reached end
 			closeConnectionsToPeers();
-			return null;
+			return null; // this is the same return value as if a record has been sent remote,
+			// receiver needs to check that it got all data from the possibly active peers
 		} // serving records finished
 
-		Integer destinedNodeId = this.getNodeIdForRecord(nextRec, this.partitionColumn);
+		Integer destinedNodeId = -1;
+		try {
+			destinedNodeId = this.getNodeIdForRecord(nextRec, this.partitionColumn);
+		} catch(IllegalArgumentException e){
+			System.err.println("FATAL: getNodeIdForRecord threw an invalid argument exception:"+e.getMessage());
+			return null;
+		}
 
 		if(destinedNodeId != this.nodeId){
 			// send to a peer
 			this.connectionMap.get(destinedNodeId).sendRecord(nextRec);
+			return null; // record was sent to remote, semantic is changed here; it doesn't indicate that send finished
 		} else {
 			return nextRec;
 		}
-
-
-		return null; // record was sent to remote, semantic is changed here; it doesn't indicate that send finished
 	}
 
 	@Override
 	public void close() {
 		// TODO: implement this method
 		// reverse what was done in open() - hint there is a helper method that you can use
-		closeConnectionsToPeers();
 		this.child.close();
 	}
 

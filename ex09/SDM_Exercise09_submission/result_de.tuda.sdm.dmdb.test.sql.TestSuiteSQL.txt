@@ -1,42 +1,30 @@
 JUnit version 4.12
-.Starting  server recv for node id 1
-Starting  server recv for node id 0
+.TCPServer on 0.0.0.0/0.0.0.0:8000 started!
+TCPServer on 0.0.0.0/0.0.0.0:8001 started!
+TCPClient: Connecting to localhost on 8001
+TCPClient: Connecting to localhost on 8000
 TCPServer on 0.0.0.0/0.0.0.0:8001 started!
 TCPServer on 0.0.0.0/0.0.0.0:8000 started!
-TCPClient: Connecting to localhost on 8000
-TCPClient: Connecting to localhost on 8000
-TCPServer on 0.0.0.0/0.0.0.0:8000 started!
-TCPServer on 0.0.0.0/0.0.0.0:8000 started!
-Handler /127.0.0.1:8000: Connection to /127.0.0.1:61577 open
-TCPClient: created ObjectOutputStream
-TCPClient: Connecting to localhost on 8001
-TCPClient: created ObjectOutputStream
-TCPClient: Connecting to localhost on 8001
-Handler /127.0.0.1:8000: Connection to /127.0.0.1:61578 open
+Handler /127.0.0.1:8001: Connection to /127.0.0.1:49177 open
+Handler /127.0.0.1:8000: Connection to /127.0.0.1:49178 open
 TCPClient: created ObjectOutputStream
 TCPClient: created ObjectOutputStream
-TCPServer on 0.0.0.0/0.0.0.0:8001 started!
 TCPClient: sending record to server
 TCPClient: sending record to server
-TCPServer on 0.0.0.0/0.0.0.0:8001 started!
-Handler /127.0.0.1:8001: Connection to /127.0.0.1:61579 open
-Handler /127.0.0.1:8001: Connection to /127.0.0.1:61580 open
 Handler /127.0.0.1:8001: Created Object Output Stream
 Handler /127.0.0.1:8000: Created Object Output Stream
-Handler /127.0.0.1:8000: Created Object Output Stream
-Handler /127.0.0.1:8001: Created Object Output Stream
 TCPClient: Finished sending to server
 TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (100 )
 Handler /127.0.0.1:8001: Received new Object: (1 )
-Handler /127.0.0.1:8000: Added object to local cache
+Handler /127.0.0.1:8000: Received new Object: (100 )
 Handler /127.0.0.1:8001: Added object to local cache
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: sending record to server
 TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (3 )
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (102 )
-TCPClient: Finished sending to server
+Handler /127.0.0.1:8001: Received new Object: (3 )
 Handler /127.0.0.1:8000: Added object to local cache
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
@@ -44,8 +32,8 @@ TCPClient: sending record to server
 TCPClient: Finished sending to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (5 )
-Handler /127.0.0.1:8001: Added object to local cache
 Handler /127.0.0.1:8000: Received new Object: (104 )
+Handler /127.0.0.1:8001: Added object to local cache
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: sending record to server
@@ -60,256 +48,260 @@ TCPClient: sending record to server
 TCPClient: Finished sending to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (108 )
-Handler /127.0.0.1:8001: Received new Object: (9 )
 Handler /127.0.0.1:8000: Added object to local cache
+Handler /127.0.0.1:8001: Received new Object: (9 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
-TCPClient: sending record to server
-TCPClient: Finished sending to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (110 )
-Handler /127.0.0.1:8001: Received new Object: (11 )
 Handler /127.0.0.1:8000: Added object to local cache
-Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+Handler /127.0.0.1:8001: Received new Object: (11 )
+TCPClient: sending record to server
+Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (13 )
-Handler /127.0.0.1:8000: Received new Object: (112 )
-Handler /127.0.0.1:8000: Added object to local cache
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (112 )
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (114 )
 Handler /127.0.0.1:8000: Added object to local cache
-Handler /127.0.0.1:8001: Received new Object: (15 )
-Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
 TCPClient: sending record to server
 TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (116 )
+Handler /127.0.0.1:8001: Received new Object: (15 )
+TCPClient: sending record to server
+Handler /127.0.0.1:8001: Added object to local cache
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (17 )
 Handler /127.0.0.1:8001: Added object to local cache
+TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (116 )
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (118 )
 Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: sending record to server
+TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (19 )
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (120 )
-Handler /127.0.0.1:8000: Added object to local cache
 Handler /127.0.0.1:8001: Received new Object: (21 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
+Handler /127.0.0.1:8000: Received new Object: (120 )
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (122 )
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (23 )
-Handler /127.0.0.1:8000: Received new Object: (122 )
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Added object to local cache
-Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (124 )
-Handler /127.0.0.1:8000: Added object to local cache
 Handler /127.0.0.1:8001: Received new Object: (25 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+Handler /127.0.0.1:8000: Received new Object: (124 )
 TCPClient: sending record to server
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (126 )
 Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: sending record to server
+TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (27 )
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (128 )
-Handler /127.0.0.1:8000: Added object to local cache
 Handler /127.0.0.1:8001: Received new Object: (29 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
+Handler /127.0.0.1:8000: Received new Object: (128 )
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (130 )
-Handler /127.0.0.1:8001: Received new Object: (31 )
 Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: sending record to server
+TCPClient: Finished sending to server
+Handler /127.0.0.1:8001: Received new Object: (31 )
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (33 )
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (132 )
-Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (35 )
-Handler /127.0.0.1:8001: Added object to local cache
+Handler /127.0.0.1:8000: Received new Object: (132 )
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (134 )
 Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: Finished sending to server
 TCPClient: sending record to server
+Handler /127.0.0.1:8001: Received new Object: (35 )
+Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (37 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8000: Received new Object: (136 )
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (39 )
-Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (138 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8001: Received new Object: (39 )
+Handler /127.0.0.1:8001: Added object to local cache
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (41 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8000: Received new Object: (140 )
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (43 )
-Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (142 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
+TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8001: Received new Object: (43 )
+Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (45 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (144 )
+TCPClient: sending record to server
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (47 )
-Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (146 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
+TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8001: Received new Object: (47 )
+Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (49 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (148 )
+TCPClient: sending record to server
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (51 )
-Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (150 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (152 )
-Handler /127.0.0.1:8000: Added object to local cache
+Handler /127.0.0.1:8001: Received new Object: (51 )
+TCPClient: sending record to server
+Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (53 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (152 )
+TCPClient: Finished sending to server
+Handler /127.0.0.1:8000: Added object to local cache
 Handler /127.0.0.1:8000: Received new Object: (154 )
 Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (55 )
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (156 )
-Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (57 )
 Handler /127.0.0.1:8001: Added object to local cache
+TCPClient: sending record to server
 TCPClient: Finished sending to server
 TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (156 )
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (158 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (59 )
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (160 )
-Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (61 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (160 )
+TCPClient: Finished sending to server
+Handler /127.0.0.1:8000: Added object to local cache
 Handler /127.0.0.1:8000: Received new Object: (162 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (63 )
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (164 )
-Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (65 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+Handler /127.0.0.1:8000: Received new Object: (164 )
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (166 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (67 )
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (168 )
-Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (69 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (168 )
+Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (170 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (71 )
+Handler /127.0.0.1:8001: Added object to local cache
+TCPClient: Finished sending to server
+Handler /127.0.0.1:8001: Received new Object: (73 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
@@ -317,132 +309,120 @@ Handler /127.0.0.1:8000: Received new Object: (172 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (73 )
-Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (174 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (75 )
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (77 )
 Handler /127.0.0.1:8001: Added object to local cache
+TCPClient: sending record to server
+TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8000: Received new Object: (176 )
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (79 )
-Handler /127.0.0.1:8001: Added object to local cache
 Handler /127.0.0.1:8000: Received new Object: (178 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8001: Received new Object: (79 )
+TCPClient: Finished sending to server
+Handler /127.0.0.1:8001: Added object to local cache
 Handler /127.0.0.1:8001: Received new Object: (81 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8000: Received new Object: (180 )
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (83 )
-Handler /127.0.0.1:8001: Added object to local cache
 Handler /127.0.0.1:8000: Received new Object: (182 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
+Handler /127.0.0.1:8001: Received new Object: (83 )
+Handler /127.0.0.1:8001: Added object to local cache
+TCPClient: sending record to server
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (85 )
-Handler /127.0.0.1:8000: Received new Object: (184 )
 Handler /127.0.0.1:8001: Added object to local cache
-Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (184 )
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Received new Object: (186 )
+Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: sending record to server
+TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8001: Received new Object: (87 )
-Handler /127.0.0.1:8000: Added object to local cache
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (89 )
+Handler /127.0.0.1:8001: Added object to local cache
+TCPClient: sending record to server
+TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8000: Received new Object: (188 )
+TCPClient: Finished sending to server
 Handler /127.0.0.1:8000: Added object to local cache
-Handler /127.0.0.1:8001: Added object to local cache
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-TCPClient: sending record to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (91 )
-Handler /127.0.0.1:8001: Added object to local cache
 Handler /127.0.0.1:8000: Received new Object: (190 )
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
+TCPClient: Finished sending to server
 TCPClient: sending record to server
+Handler /127.0.0.1:8001: Received new Object: (91 )
+Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Received new Object: (192 )
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8000: Added object to local cache
 Handler /127.0.0.1:8001: Received new Object: (93 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
+TCPClient: Finished sending to server
 TCPClient: sending record to server
+Handler /127.0.0.1:8000: Received new Object: (192 )
+Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: Finished sending to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (95 )
 Handler /127.0.0.1:8000: Received new Object: (194 )
-Handler /127.0.0.1:8001: Added object to local cache
 Handler /127.0.0.1:8000: Added object to local cache
 TCPClient: sending record to server
+TCPClient: Finished sending to server
+TCPClient: sending record to server
+Handler /127.0.0.1:8001: Received new Object: (95 )
+Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: Finished sending to server
 Handler /127.0.0.1:8001: Received new Object: (97 )
 Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: sending record to server
 TCPClient: Finished sending to server
+TCPClient: sending record to server
 Handler /127.0.0.1:8000: Received new Object: (196 )
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: sending record to server
-TCPClient: sending record to server
 TCPClient: Finished sending to server
-TCPClient: Finished sending to server
-Handler /127.0.0.1:8001: Received new Object: (99 )
-Handler /127.0.0.1:8001: Added object to local cache
 Handler /127.0.0.1:8000: Received new Object: (198 )
 Handler /127.0.0.1:8000: Added object to local cache
-TCPClient: Closing connection to localhost/127.0.0.1:8000
+TCPClient: sending record to server
+TCPClient: Finished sending to server
 TCPClient: Closing connection to localhost/127.0.0.1:8001
+Handler /127.0.0.1:8001: Received new Object: (99 )
+Handler /127.0.0.1:8001: Added object to local cache
 TCPClient: Closing connection to localhost/127.0.0.1:8000
-TCPClient: Closing connection to localhost/127.0.0.1:8001
+Handler /127.0.0.1:8001: Got a EOFException. This indicates that a client closed the connection
 Handler /127.0.0.1:8000: Got a EOFException. This indicates that a client closed the connection
-Handler /127.0.0.1:8000: Connection to /127.0.0.1:61577 closed
+Handler /127.0.0.1:8001: Connection to /127.0.0.1:49177 closed
+Handler /127.0.0.1:8000: Connection to /127.0.0.1:49178 closed
 Handler /127.0.0.1:8000: Num finished peers = 2
-Handler /127.0.0.1:8001: Got a EOFException. This indicates that a client closed the connection
-Handler /127.0.0.1:8001: Connection to /127.0.0.1:61580 closed
 Handler /127.0.0.1:8001: Num finished peers = 2
-Handler /127.0.0.1:8001: Got a EOFException. This indicates that a client closed the connection
-Handler /127.0.0.1:8000: Got a EOFException. This indicates that a client closed the connection
-Handler /127.0.0.1:8001: Connection to /127.0.0.1:61579 closed
-Handler /127.0.0.1:8001: Num finished peers = 3
-Handler /127.0.0.1:8000: Connection to /127.0.0.1:61578 closed
-Handler /127.0.0.1:8000: Num finished peers = 3
-TCPServer on 0.0.0.0/0.0.0.0:8000 will be closed!
 TCPServer on 0.0.0.0/0.0.0.0:8001 will be closed!
-Record list1: [(0 ), (100 ), (2 ), (102 ), (4 ), (104 ), (6 ), (106 ), (8 ), (108 ), (10 ), (110 ), (12 ), (112 ), (14 ), (114 ), (16 ), (116 ), (18 ), (118 ), (20 ), (120 ), (22 ), (122 ), (24 ), (124 ), (26 ), (126 ), (28 ), (128 ), (30 ), (130 ), (32 ), (132 ), (34 ), (134 ), (36 ), (136 ), (38 ), (138 ), (40 ), (140 ), (42 ), (142 ), (44 ), (144 ), (46 ), (146 ), (48 ), (148 ), (50 ), (150 ), (52 ), (152 ), (54 ), (154 ), (156 ), (56 ), (158 ), (58 ), (160 ), (60 ), (162 ), (62 ), (164 ), (64 ), (166 ), (66 ), (168 ), (68 ), (170 ), (70 ), (172 ), (72 ), (174 ), (74 ), (76 ), (176 ), (78 ), (178 ), (80 ), (180 ), (82 ), (182 ), (84 ), (184 ), (86 ), (186 ), (88 ), (188 ), (90 ), (190 ), (92 ), (192 ), (94 ), (194 ), (96 ), (196 ), (98 ), (198 )]
-Record list2: [(1 ), (101 ), (3 ), (103 ), (5 ), (105 ), (7 ), (107 ), (9 ), (109 ), (11 ), (111 ), (13 ), (113 ), (15 ), (115 ), (17 ), (117 ), (19 ), (119 ), (21 ), (121 ), (23 ), (123 ), (25 ), (125 ), (27 ), (127 ), (29 ), (129 ), (31 ), (131 ), (33 ), (35 ), (133 ), (37 ), (135 ), (39 ), (137 ), (41 ), (139 ), (43 ), (141 ), (45 ), (143 ), (47 ), (145 ), (49 ), (147 ), (51 ), (149 ), (151 ), (53 ), (153 ), (55 ), (155 ), (57 ), (157 ), (59 ), (159 ), (61 ), (161 ), (63 ), (163 ), (65 ), (165 ), (67 ), (167 ), (69 ), (169 ), (71 ), (171 ), (73 ), (173 ), (75 ), (175 ), (77 ), (177 ), (79 ), (81 ), (179 ), (181 ), (83 ), (183 ), (85 ), (185 ), (87 ), (187 ), (89 ), (189 ), (91 ), (191 ), (93 ), (193 ), (95 ), (97 ), (195 ), (197 ), (99 ), (199 )]
+TCPServer on 0.0.0.0/0.0.0.0:8000 will be closed!
+Record list1: [(0 ), (100 ), (2 ), (102 ), (4 ), (104 ), (6 ), (106 ), (8 ), (108 ), (10 ), (110 ), (12 ), (112 ), (14 ), (114 ), (16 ), (116 ), (18 ), (118 ), (20 ), (120 ), (22 ), (122 ), (24 ), (124 ), (26 ), (126 ), (28 ), (128 ), (30 ), (130 ), (32 ), (132 ), (34 ), (134 ), (36 ), (136 ), (38 ), (138 ), (40 ), (140 ), (42 ), (142 ), (44 ), (144 ), (46 ), (146 ), (48 ), (148 ), (50 ), (150 ), (52 ), (152 ), (54 ), (154 ), (56 ), (156 ), (58 ), (158 ), (60 ), (160 ), (62 ), (162 ), (64 ), (164 ), (66 ), (166 ), (68 ), (168 ), (70 ), (170 ), (72 ), (172 ), (74 ), (174 ), (76 ), (176 ), (78 ), (178 ), (80 ), (180 ), (82 ), (182 ), (84 ), (184 ), (86 ), (186 ), (88 ), (188 ), (90 ), (190 ), (92 ), (192 ), (94 ), (194 ), (96 ), (196 ), (98 ), (198 )]
+Record list2: [(1 ), (101 ), (3 ), (103 ), (5 ), (105 ), (7 ), (107 ), (9 ), (109 ), (11 ), (111 ), (13 ), (113 ), (15 ), (115 ), (17 ), (117 ), (19 ), (119 ), (21 ), (121 ), (23 ), (123 ), (25 ), (125 ), (27 ), (127 ), (29 ), (129 ), (31 ), (131 ), (33 ), (133 ), (35 ), (135 ), (37 ), (137 ), (39 ), (139 ), (41 ), (141 ), (43 ), (143 ), (45 ), (145 ), (47 ), (147 ), (49 ), (149 ), (51 ), (151 ), (53 ), (153 ), (55 ), (155 ), (57 ), (157 ), (59 ), (159 ), (61 ), (161 ), (63 ), (163 ), (65 ), (165 ), (67 ), (167 ), (69 ), (169 ), (71 ), (171 ), (73 ), (173 ), (75 ), (175 ), (77 ), (177 ), (79 ), (179 ), (81 ), (181 ), (83 ), (183 ), (85 ), (185 ), (87 ), (187 ), (89 ), (189 ), (91 ), (191 ), (93 ), (193 ), (95 ), (195 ), (97 ), (197 ), (99 ), (199 )]
 .(0 0 0 0 )
 (1 1 1 1 )
 (2 2 2 2 )
@@ -544,7 +524,7 @@ Record list2: [(1 ), (101 ), (3 ), (103 ), (5 ), (105 ), (7 ), (107 ), (9 ), (10
 (98 98 98 98 )
 (99 99 99 99 )
 
-Time: 3.004
+Time: 1.936
 
 OK (2 tests)
 
