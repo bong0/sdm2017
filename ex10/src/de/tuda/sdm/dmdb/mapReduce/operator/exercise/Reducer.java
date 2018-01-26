@@ -65,8 +65,12 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 			currentRecord = this.child.next();
 
 			boolean key_switched = false;
-			if(lastRecord == null && currentRecord == null){
-				return null; // no input was made, quit operator right away
+			if(lastRecord == null){
+				if(currentRecord == null) {
+					return null; // no input was made, quit operator right away
+				} else {
+					// do nothing, this is the first record
+				}
 			}
 			else if(currentRecord == null){
 				key_switched=true; // this is the last item, we need to force a reduction!
@@ -76,7 +80,6 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 			}
 
 			if(key_switched) {
-				System.out.println("key change doing red");
 
 				this.reduce((KEYIN)this.lastRecord.getValue(KEY_COLUMN), valueQueue, this.nextList);
 
