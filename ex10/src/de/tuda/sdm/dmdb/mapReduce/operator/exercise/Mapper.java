@@ -1,6 +1,8 @@
 package de.tuda.sdm.dmdb.mapReduce.operator.exercise;
 
-import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import de.tuda.sdm.dmdb.mapReduce.operator.MapReduceOperator;
 import de.tuda.sdm.dmdb.mapReduce.operator.MapperBase;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
@@ -29,11 +31,13 @@ import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
  */
 public class Mapper<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLValue, KEYOUT extends AbstractSQLValue, VALUEOUT extends AbstractSQLValue> extends MapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT>{
 
+
 	@Override
 	public void open() {
 		// TODO: implement this method
 		// make sure to initialize ALL (inherited) member variables
-
+		this.nextList = new ConcurrentLinkedQueue<AbstractRecord>(); // from MapreduceOperator
+		this.child.open();
 	}
 
 	@Override
@@ -45,19 +49,29 @@ public class Mapper<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQLV
 		// keep in mind that a mapper potentially maps one AbstractRecord to multiple other AbstractRecords
 
 		// get next input
+		AbstractRecord inputRecord = this.child.next();
+		if(inputRecord != null) {
+			// prepare input
+			KEYIN keyin = (KEYIN) inputRecord.getValue(KEY_COLUMN);
+			VALUEIN valuein = (VALUEIN) inputRecord.getValue(VALUE_COLUMN);
 
-		// prepare input
+			// invoke the map function on the input and pass in this.nextList to cache the output pairs there
+			this.map(keyin, valuein, this.nextList);
+		}
 
-		// invoke the map function on the input and pass in this.nextList to cache the output pairs there
+		return this.nextList.poll(); // this automatically returns null if also the local cache is empty
 
-		return null;
+
+		//System.err.println("UNEXPECTED BAILOUT OUT OF next()");
+		//return null;
 	}
 
 	@Override
 	public void close() {
 		// TODO: implement this method
 		// reverse what was done in open()
-
+		this.child.close();
+		this.nextList.clear();
 	}
 
 }
