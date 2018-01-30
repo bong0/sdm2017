@@ -28,7 +28,6 @@ public class ReducerTask extends ReducerTaskBase {
 
 		// TODO: implement this method
 		// read data from input (Remember: There is a special operator to read data from a Table)
-		AbstractRecord proto = this.input.getPrototype();
 
 		// instantiate the reducer-operator
 		ReducerBase reducer = null;

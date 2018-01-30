@@ -1,13 +1,11 @@
 package de.tuda.sdm.dmdb.mapReduce.operator.exercise;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import de.tuda.sdm.dmdb.mapReduce.operator.MapReduceOperator;
 import de.tuda.sdm.dmdb.mapReduce.operator.ReducerBase;
 import de.tuda.sdm.dmdb.storage.AbstractRecord;
 import de.tuda.sdm.dmdb.storage.types.AbstractSQLValue;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * similar to https://github.com/apache/hadoop/blob/trunk/hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-core/src/main/java/org/apache/hadoop/mapreduce/Reducer.java
@@ -66,8 +64,6 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 		while(true){
 			currentRecord = this.child.next();
 
-			System.out.println("reducer read record: "+currentRecord);
-
 			boolean key_switched = false;
 			if(lastRecord == null){
 				if(currentRecord == null) {
@@ -103,7 +99,6 @@ public class Reducer<KEYIN extends AbstractSQLValue, VALUEIN extends AbstractSQL
 			valueQueue.add((VALUEIN) currentRecord.getValue(VALUE_COLUMN));
 			this.lastRecord = currentRecord; // update LastRecord
 
-			System.out.println("Added to valuequeue: k="+this.lastRecord.getValue(KEY_COLUMN)+"  rec:"+currentRecord);
 
 		}
 		// invoke the reduce function on the input and pass in this.nextList to cache the output pairs there
