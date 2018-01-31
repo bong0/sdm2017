@@ -34,8 +34,8 @@ public class DetermineUserReducer<KEYIN,VALUEIN,KEYOUT,VALUEOUT> extends Reducer
 
 
         for(VALUEIN url: urlCountMap.keySet()) {
-            //if(username.equals("np93kxke")) {
-             //   System.out.println("k=" + username + "  v=" + urlCountMap.get(url) + MAGICQOUTE + url);
+            //if(username.equals("xh22hzgz")) {
+            //    System.out.println("k=" + username + "  v=" + urlCountMap.get(url) + MAGICQOUTE + url);
             //}
             context.write((KEYOUT) username, (VALUEOUT) (urlCountMap.get(url)+MAGICQOUTE+url));
         }
